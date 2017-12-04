@@ -20,5 +20,6 @@ from manager import views
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
+    url(r'^marcas/', views.marcas, name='marcas'),
     url(r'^admin/', admin.site.urls),
 ]
