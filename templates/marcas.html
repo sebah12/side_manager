@@ -7,9 +7,21 @@
   <body>
     <h1>Marcas</h1>
 
-    {% for marca in marcas %}
-      {{ marca.nombre }} <br>
-    {% endfor %}
-
+ <table border="1">
+      <thead>
+        <tr>
+          <th>Marca</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for marca in marcas %}
+          <tr>
+            <td>
+              {{ marca.nombre }}<br>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </body>
 </html>
