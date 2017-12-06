@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from .models import Marca
+from .models import Marca, Item
 
 
 def home(request):
@@ -10,3 +10,8 @@ def home(request):
 def marcas(request):
     marcas = Marca.objects.all()
     return render(request, 'marcas.html', {'marcas': marcas})
+
+
+def productos(request):
+    items = Item.objects.all()
+    return render(request, 'items.html', {'productos': items})
