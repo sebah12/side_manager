@@ -1,15 +1,10 @@
-{% load static %}<!DOCTYPE html><!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Marcas</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-  </head>
-  <body>
-    <div class="container">
-      <ol class="breadcrumb my-4">
-        <li class="breadcrumb-item"><a href="{% url 'marcas' %}">Marcas</a></li>
-      </ol>
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item active">Productos</li>
+{% endblock %}
+
+{% block content %}
       <table class="table">
         <thead class="thead-inverse">
         <tr>
@@ -26,5 +21,4 @@
         {% endfor %}
       </tbody>
     </table>
-  </body>
-</html>
+{% endblock %}
