@@ -26,7 +26,6 @@ def get_my_choices():
 
 
 class NewProductForm(forms.ModelForm):
-    item_id = forms.NumberInput()
     descripcion = forms.CharField(
         max_length=50,
         required=True,
