@@ -29,8 +29,7 @@ def new_marca(request):
         if form.is_valid():
             marca = form.save(commit=False)
             marca.save()
-
-        return redirect('marcas')
+            return redirect('marcas')
     else:
         form = NewMarcaForm()
     return render(request, 'new_marca.html', {
