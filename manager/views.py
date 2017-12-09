@@ -14,7 +14,7 @@ def manager(request):
 
 
 def marcas(request):
-    marcas = Marca.objects.all()
+    marcas = Marca.objects.all().order_by('nombre')
     return render(request, 'marcas.html', {'marcas': marcas})
 
 
@@ -38,7 +38,7 @@ def new_marca(request):
 
 
 def productos(request):
-    items = Item.objects.all()
+    items = Item.objects.all().order_by('item_id')
     return render(request, 'items.html', {'productos': items})
 
 
