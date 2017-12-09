@@ -28,6 +28,7 @@ def new_marca(request):
         form = NewMarcaForm(request.POST)
         if form.is_valid():
             marca = form.save(commit=False)
+            marca.nombre = marca.nombre.upper()
             marca.save()
             return redirect('marcas')
     else:
