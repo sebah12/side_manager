@@ -21,6 +21,7 @@ from manager import views
 urlpatterns = [
     url(r'^$', views.home, name='home'),
     url(r'^manager/', views.manager, name='manager'),
+    url(r'^marcas/(?P<pk>\d+)/$', views.marca, name='marca'),
     url(r'^marcas/', views.marcas, name='marcas'),
     url(r'^productos/', views.productos, name='productos'),
     url(r'^admin/', admin.site.urls),
