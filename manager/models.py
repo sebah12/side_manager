@@ -20,7 +20,8 @@ class SoftDeletionManager(models.Manager):
 
 class SoftDeletionQuerySet(QuerySet):
     def delete(self):
-        return super(SoftDeletionQuerySet, self).update(deleted_at=timezone.now())
+        return super(
+            SoftDeletionQuerySet, self).update(deleted_at=timezone.now())
 
     def hard_delete(self):
         return super(SoftDeletionQuerySet, self).delete()
@@ -62,5 +63,7 @@ class Marca(SoftDeletionModel):
 
 class Item(SoftDeletionModel):
     item_id = models.IntegerField(primary_key=True)
-    descripcion = models.CharField(max_length=50, unique=True)
-    marca = models.ForeignKey(Marca, related_name='items')
+    descripcion = models.CharField(max_length=50)
+    marca = models.ForeignKey(
+        Marca, related_name='items', blank=True, null=True)
+    barcode = models.IntegerField(unique=True, blank=True, null=True)
