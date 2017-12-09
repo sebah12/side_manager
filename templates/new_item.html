@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Agregar Producto{% endblock %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{% url 'productos' %}">Productos</a></li>
+  <li class="breadcrumb-item active">Nuev producto</li>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="id_item_id">ID</label>
+      <input type="number" class="form-control" id="id_item_id" name="item_id">
+      <label for="id_descripcion">Descripción</label>
+      <input type="text" class="form-control" id="id_descripcion" name="descripcion">
+      <label for="id_marca">Marca</label>
+      <input type="text" class="form-control" id="id_marca" name="marca">
+      <label for="id_barcode">Código de barras</label>
+      <input type="number" class="form-control" id="id_barcode" name="barcode">
+    </div>
+    <button type="submit" class="btn btn-success">Agregar</button>
+  </form>
+{% endblock %}

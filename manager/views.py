@@ -32,7 +32,7 @@ def new_marca(request):
             nombre=nombre,
         )
 
-        return redirect('marcas')  # TODO: redirect to the created topic page
+        return redirect('marcas')
 
     return render(request, 'new_marca.html', {'new_marca': new_marca})
 
@@ -40,3 +40,24 @@ def new_marca(request):
 def productos(request):
     items = Item.objects.all()
     return render(request, 'items.html', {'productos': items})
+
+
+def new_item(request):
+    if request.method == 'POST':
+        item_id = request.POST['item_id']
+        descripcion = request.POST['descripcion']
+        marca = request.POST['marca']
+        barcode = request.POST['barcode']
+        user = User.objects.first()
+        # TODO: get the currently logged in user
+
+        item = Item.objects.create(
+            item_id=item_id,
+            descripcion=descripcion,
+            marca=marca,
+            barcode=barcode
+        )
+
+        return redirect('productos')
+
+    return render(request, 'new_item.html', {'new_item': new_item})
