@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Marca, Item
+from .forms import NewMarcaForm
 
 
 def home(request):
@@ -24,17 +25,16 @@ def marca(request, pk):
 
 def new_marca(request):
     if request.method == 'POST':
-        nombre = request.POST['nombre']
-        user = User.objects.first()
-        # TODO: get the currently logged in user
-
-        marca = Marca.objects.create(
-            nombre=nombre,
-        )
+        form = NewMarcaForm(request.POST)
+        if form.is_valid():
+            marca = form.save(commit=False)
+            marca.save()
 
         return redirect('marcas')
-
-    return render(request, 'new_marca.html', {'new_marca': new_marca})
+    else:
+        form = NewMarcaForm()
+    return render(request, 'new_marca.html', {
+        'new_marca': new_marca, 'form': form})
 
 
 def productos(request):

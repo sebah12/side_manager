@@ -10,10 +10,7 @@
 {% block content %}
 <form method="post">
     {% csrf_token %}
-    <div class="form-group">
-      <label for="id_nombre">Nombre</label>
-      <input type="text" class="form-control" id="id_nombre" name="nombre">
-    </div>
+    {{ form.as_p }}
     <button type="submit" class="btn btn-success">Agregar</button>
   </form>
 {% endblock %}
