@@ -7,6 +7,10 @@ def home(request):
     return HttpResponse('Hello, World!')
 
 
+def manager(request):
+    return render(request, 'manager.html', {'manager': manager})
+
+
 def marcas(request):
     marcas = Marca.objects.all()
     return render(request, 'marcas.html', {'marcas': marcas})

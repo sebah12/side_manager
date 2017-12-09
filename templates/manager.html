@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item active">Manager</li>
+{% endblock %}
+
+{% block content %}
+      <table class="table">
+        <thead class="thead-inverse">
+        <tr>
+          <th>Páginas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="{% url 'marcas' %}">Marcas</a></td>
+        </tr>
+        <tr>
+          <td><a href="{% url 'productos' %}">Productos</a></td>
+        </tr>
+      </tbody>
+    </table>
+{% endblock %}
