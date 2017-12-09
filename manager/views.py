@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Marca, Item
-from .forms import NewMarcaForm
+from .forms import NewMarcaForm, NewProductForm
 
 
 def home(request):
@@ -44,20 +44,14 @@ def productos(request):
 
 def new_item(request):
     if request.method == 'POST':
-        item_id = request.POST['item_id']
-        descripcion = request.POST['descripcion']
-        marca = request.POST['marca']
-        barcode = request.POST['barcode']
-        user = User.objects.first()
-        # TODO: get the currently logged in user
-
-        item = Item.objects.create(
-            item_id=item_id,
-            descripcion=descripcion,
-            marca=marca,
-            barcode=barcode
-        )
-
-        return redirect('productos')
-
-    return render(request, 'new_item.html', {'new_item': new_item})
+        form = NewProductForm(request.POST)
+        if form.is_valid():
+            producto = form.save(commit=False)
+            # marca = Marca.objects.get(nombre=producto.marca)
+            # producto.marca = marca
+            producto.save()
+            return redirect('productos')
+    else:
+        form = NewProductForm()
+    return render(request, 'new_item.html', {
+        'new_item': new_item, 'form': form})
