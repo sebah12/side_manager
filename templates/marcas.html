@@ -9,20 +9,21 @@
     <a href="{% url 'new_marca' %}" class="btn btn-primary">Agregar Marca</a>
   </div>
 
-  <table class="table">
+  <table class="table table-striped">
     <thead class="thead-inverse">
         <tr>
           <th>Marca</th>
+          <th></th>
         </tr>
-      </thead>
-      <tbody>
-        {% for marca in marcas %}
-          <tr>
-            <td>
-              {{ marca.nombre }}<br>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    </thead>
+    <tbody>
+      {% for marca in marcas %}
+      <tr>
+        <td>{{ marca.nombre }}</td>
+        <td><span class="badge badge-default">
+            <a href="/marcas/marca.marca_id/">Edit</a></span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
