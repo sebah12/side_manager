@@ -31,6 +31,14 @@ urlpatterns = [
     url(r'^productos/new/$', views.new_item, name='new_item'),
     url(r'^productos/', views.productos, name='productos'),
     url(r'^admin/', admin.site.urls),
+    url(r'^settings/password/$',
+        auth_views.PasswordChangeView.as_view(
+            template_name='password_change.html'),
+        name='password_change'),
+    url(r'^settings/password/done/$',
+        auth_views.PasswordChangeDoneView.as_view(
+            template_name='password_change_done.html'),
+        name='password_change_done'),
     url(r'^reset/$', auth_views.PasswordResetView.as_view(
         template_name='password_reset.html',
         email_template_name='password_reset_email.html',
