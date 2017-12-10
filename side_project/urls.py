@@ -26,6 +26,8 @@ urlpatterns = [
     url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
     url(r'^manager/', views.manager, name='manager'),
     url(r'^marcas/(?P<pk>\d+)/$', views.marca, name='marca'),
+    url(r'^marcas/(?P<marca_id>\d+)/edit/$',
+        views.MarcaUpdateView.as_view(), name='edit_marca'),
     url(r'^marcas/new/$', views.new_marca, name='new_marca'),
     url(r'^marcas/', views.marcas, name='marcas'),
     url(r'^productos/new/$', views.new_item, name='new_item'),

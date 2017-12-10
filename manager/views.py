@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Marca, Item
 from .forms import NewMarcaForm, NewProductForm
 from django.contrib.auth.decorators import login_required
+from django.views.generic import UpdateView
 
 
 def home(request):
@@ -62,3 +63,17 @@ def new_item(request):
         form = NewProductForm()
     return render(request, 'new_item.html', {
         'new_item': new_item, 'form': form})
+
+
+class MarcaUpdateView(UpdateView):
+    model = Marca
+    fields = ('nombre', )
+    template_name = 'edit_marca.html'
+    pk_url_kwarg = 'marca_id'
+    context_object_name = 'marca'
+
+    def form_valid(self, form):
+        marca = form.save(commit=False)
+        marca.nombre = marca.nombre.upper()
+        marca.save()
+        return redirect('marcas')
