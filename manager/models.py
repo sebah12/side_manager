@@ -67,3 +67,6 @@ class Item(SoftDeletionModel):
     marca = models.ForeignKey(
         Marca, related_name='items', blank=True, null=True)
     barcode = models.IntegerField(unique=True, blank=True, null=True)
+
+    def __str__(self):
+        return self.descripcion
