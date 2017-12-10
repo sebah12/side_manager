@@ -1,16 +1,8 @@
-{% extends 'base.html' %}
+{% extends 'base_accounts.html' %}
 
-{% load static %}
+{% block title %}Log in to SIDE Manager{% endblock %}
 
-{% block stylesheet %}
-  <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
-{% endblock %}
-
-{% block body %}
-  <div class="container">
-    <h1 class="text-center logo my-4">
-      <a href="{% url 'manager' %}">SIDE Manager</a>
-    </h1>
+{% block content %}
     <div class="row justify-content-center">
       <div class="col-lg-4 col-md-6 col-sm-8">
         <div class="card">
@@ -31,5 +23,4 @@
         </div>
       </div>
     </div>
-  </div>
 {% endblock %}
