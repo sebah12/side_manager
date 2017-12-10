@@ -57,7 +57,7 @@ def new_item(request):
         if form.is_valid():
             producto = form.save(commit=False)
             # marca = Marca.objects.get(nombre=producto.marca)
-            # producto.marca = marca
+            producto.descripcion = producto.descripcion.upper()
             producto.save()
             return redirect('productos')
     else:
@@ -79,3 +79,18 @@ class MarcaUpdateView(UpdateView):
         marca.nombre = marca.nombre.upper()
         marca.save()
         return redirect('marcas')
+
+
+@method_decorator(login_required, name='dispatch')
+class ItemUpdateView(UpdateView):
+    model = Item
+    fields = ('descripcion', 'marca', 'barcode',)
+    template_name = 'edit_item.html'
+    pk_url_kwarg = 'item_id'
+    context_object_name = 'items'
+
+    def form_valid(self, form):
+        producto = form.save(commit=False)
+        producto.descripcion = producto.descripcion.upper()
+        producto.save()
+        return redirect('productos')

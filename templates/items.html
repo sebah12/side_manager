@@ -26,7 +26,7 @@
             <td>{{ item.marca }}</td>
             <td class="align-middle">0</td>
             <td  <span class="badge badge-default">
-            <a href="/productos/">Edit</a></span></td>
+            <a href="{% url 'edit_item' item.item_id %}">Edit</a></span></td>
           </tr>
         {% endfor %}
       </tbody>

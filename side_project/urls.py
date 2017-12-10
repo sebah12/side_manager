@@ -30,6 +30,8 @@ urlpatterns = [
         views.MarcaUpdateView.as_view(), name='edit_marca'),
     url(r'^marcas/new/$', views.new_marca, name='new_marca'),
     url(r'^marcas/', views.marcas, name='marcas'),
+    url(r'^productos/(?P<item_id>\d+)/edit/$',
+        views.ItemUpdateView.as_view(), name='edit_item'),
     url(r'^productos/new/$', views.new_item, name='new_item'),
     url(r'^productos/', views.productos, name='productos'),
     url(r'^admin/', admin.site.urls),
