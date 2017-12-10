@@ -5,6 +5,7 @@ from .models import Marca, Item
 from .forms import NewMarcaForm, NewProductForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import UpdateView
+from django.utils.decorators import method_decorator
 
 
 def home(request):
@@ -65,6 +66,7 @@ def new_item(request):
         'new_item': new_item, 'form': form})
 
 
+@method_decorator(login_required, name='dispatch')
 class MarcaUpdateView(UpdateView):
     model = Marca
     fields = ('nombre', )
