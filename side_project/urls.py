@@ -17,6 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from manager import views
+from accounts import views as accounts_views
 
 
 urlpatterns = [
@@ -24,6 +25,8 @@ urlpatterns = [
     url(r'^login/$', auth_views.LoginView.as_view(
         template_name='login.html'), name='login'),
     url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
+    url(r'^settings/account/$', accounts_views.UserUpdateView.as_view(),
+        name='my_account'),
     url(r'^manager/', views.manager, name='manager'),
     url(r'^marcas/(?P<pk>\d+)/$', views.marca, name='marca'),
     url(r'^marcas/(?P<marca_id>\d+)/edit/$',
