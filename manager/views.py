@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Marca, Item
 from .forms import NewMarcaForm, NewProductForm
 from django.contrib.auth.decorators import login_required
-from django.views.generic import UpdateView, DeleteView
+from django.views.generic import UpdateView, DeleteView, ListView
 from django.utils.decorators import method_decorator
 
 
@@ -17,10 +17,17 @@ def manager(request):
     return render(request, 'manager.html', {'manager': manager})
 
 
-@login_required
-def marcas(request):
-    marcas = Marca.objects.all().order_by('nombre')
-    return render(request, 'marcas.html', {'marcas': marcas})
+# @login_required
+# def marcas(request):
+#     marcas = Marca.objects.all().order_by('nombre')
+#     return render(request, 'marcas.html', {'marcas': marcas})
+@method_decorator(login_required, name='dispatch')
+class MarcaListView(ListView):
+    model = Marca
+    context_object_name = 'marcas'
+    template_name = 'marcas.html'
+    ordering = 'nombre'
+    paginate_by = 10
 
 
 @login_required
