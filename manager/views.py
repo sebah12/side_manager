@@ -17,10 +17,6 @@ def manager(request):
     return render(request, 'manager.html', {'manager': manager})
 
 
-# @login_required
-# def marcas(request):
-#     marcas = Marca.objects.all().order_by('nombre')
-#     return render(request, 'marcas.html', {'marcas': marcas})
 @method_decorator(login_required, name='dispatch')
 class MarcaListView(ListView):
     model = Marca
@@ -51,10 +47,13 @@ def new_marca(request):
         'new_marca': new_marca, 'form': form})
 
 
-@login_required
-def productos(request):
-    items = Item.objects.all().order_by('item_id')
-    return render(request, 'items.html', {'productos': items})
+@method_decorator(login_required, name='dispatch')
+class ProductoListView(ListView):
+    model = Item
+    context_object_name = 'productos'
+    template_name = 'items.html'
+    ordering = 'item_id'
+    paginate_by = 10
 
 
 @login_required
