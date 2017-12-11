@@ -1,10 +1,10 @@
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Marca, Item
 from .forms import NewMarcaForm, NewProductForm
 from django.contrib.auth.decorators import login_required
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 
 
@@ -82,15 +82,53 @@ class MarcaUpdateView(UpdateView):
 
 
 @method_decorator(login_required, name='dispatch')
+class MarcaDeleteView(DeleteView):
+    model = Marca
+    fields = ('nombre', )
+    template_name = 'delete_marca.html'
+    pk_url_kwarg = 'marca_id'
+    context_object_name = 'marca'
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Calls the delete() method on the fetched object and then
+        redirects to the success URL.
+        """
+        marca = self.get_object()
+        success_url = 'marcas'
+        marca.delete()
+        return HttpResponseRedirect(success_url)
+
+
+@method_decorator(login_required, name='dispatch')
 class ItemUpdateView(UpdateView):
     model = Item
     fields = ('descripcion', 'marca', 'barcode',)
     template_name = 'edit_item.html'
     pk_url_kwarg = 'item_id'
-    context_object_name = 'items'
+    context_object_name = 'producto'
 
     def form_valid(self, form):
         producto = form.save(commit=False)
         producto.descripcion = producto.descripcion.upper()
         producto.save()
         return redirect('productos')
+
+
+@method_decorator(login_required, name='dispatch')
+class ItemDeleteView(DeleteView):
+    model = Item
+    fields = ('item_id', )
+    template_name = 'delete_item.html'
+    pk_url_kwarg = 'item_id'
+    context_object_name = 'producto'
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Calls the delete() method on the fetched object and then
+        redirects to the success URL.
+        """
+        producto = self.get_object()
+        success_url = 'productos'
+        producto.delete()
+        return HttpResponseRedirect(success_url)

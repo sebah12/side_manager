@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Producto{% endblock %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{% url 'marcas' %}">Productos</a></li>
+  <li class="breadcrumb-item active">Eliminar {{ producto.item_id }}</li>
+{% endblock %}
+
+  {% block content %}
+    <form method="post" class="mb-4" novalidate>
+      {% csrf_token %}
+      {% include 'includes/form.html' %}
+      <p>Are you sure you want to delete "{{ object }}"?</p>
+      <a href="{% url 'edit_item' producto.item_id %}" class="btn btn-outline-secondary" role="button">Cancel</a>
+      <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+{% endblock %}

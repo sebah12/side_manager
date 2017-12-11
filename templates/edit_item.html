@@ -3,8 +3,8 @@
 {% block title %}Editar Producto{% endblock %}
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item"><a href="{% url 'marcas' %}">Productos</a></li>
-  <li class="breadcrumb-item active">Editar {{ item.item_id }}</li>
+  <li class="breadcrumb-item"><a href="{% url 'productos' %}">Productos</a></li>
+  <li class="breadcrumb-item active">Editar {{ producto.item_id }}</li>
 {% endblock %}
 
 {% block content %}
@@ -13,5 +13,6 @@
     {% include 'includes/form.html' %}
     <button type="submit" class="btn btn-success">Save changes</button>
     <a href="{% url 'productos' %}" class="btn btn-outline-secondary" role="button">Cancel</a>
+    <a href="{% url 'delete_item' producto.item_id %}" class="btn btn-danger" role="button">Delete</a>
   </form>
 {% endblock %}
