@@ -6,6 +6,10 @@
 {% endblock %}
 
 {% block content %}
+  <div class="mb-4">
+    <a href="{% url 'new_item' %}" class="btn btn-success">Ingresar Producto</a>
+    <a href="{% url 'new_item' %}" class="btn btn-danger">Retirar Producto</a>
+  </div>
   <table class="table table-triped">
     <form id="searchform" action="{% url 'deposito' %}" method="get" accept-charset="utf-8">
       <thead class="thead">
@@ -22,7 +26,7 @@
         <th><input class="searchfield" id="searchbox" name="marca"
                    type="text" placeholder="MARCA">
         </th>
-        <td><button class="btn btn-success" type="submit">Search</button></td>
+        <td><button class="btn btn-primary" type="submit">Search</button></td>
         </thead>
     </form>
         <thead class="thead-inverse">
