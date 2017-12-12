@@ -67,18 +67,7 @@ class Item(SoftDeletionModel):
     marca = models.ForeignKey(
         Marca, related_name='items', blank=True, null=True)
     barcode = models.IntegerField(unique=True, blank=True, null=True)
+    stock = models.IntegerField(default=0)
 
     def __str__(self):
         return self.descripcion
-
-
-class ItemDeposito(SoftDeletionModel):
-    """Documentation for ItemDeposito
-
-    """
-    item = models.ForeignKey(
-        Item, related_name='deposito')
-    stock = models.IntegerField()
-
-    def __srt__(self, args):
-        return self.id
