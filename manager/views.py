@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Marca, Item
 from .forms import NewMarcaForm, NewProductForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.postgres.search import SearchQuery, SearchRank,SearchVector
 from django.views.generic import UpdateView, DeleteView, ListView
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
@@ -25,6 +26,15 @@ class MarcaListView(ListView):
     template_name = 'marcas.html'
     ordering = 'nombre'
     paginate_by = 10
+
+    def get_queryset(self):
+        result = super(MarcaListView, self).get_queryset()
+        keywords = self.request.GET.get('nombre')
+        if keywords:
+            keywords = keywords.upper()
+            result = result.filter(nombre__contains=keywords)
+
+        return result
 
 
 @login_required

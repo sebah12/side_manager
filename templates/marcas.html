@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item active"> Marcas</li>
+  <li class="breadcrumb-item"><a href="{% url 'marcas' %}">Marcas</a></li>
 {% endblock %}
 
 {% block content %}
   <div class="mb-4">
     <a href="{% url 'new_marca' %}" class="btn btn-primary">Agregar Marca</a>
   </div>
-
+    {% csrf_token %}
+    {% include 'includes/search_form.html' %}
   <table class="table table-striped">
     <thead class="thead-inverse">
         <tr>
