@@ -2,13 +2,10 @@
 {% load form_tags widget_tweaks %}
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item active">Depósito</li>
+  <li class="breadcrumb-item active"><a href="{% url 'deposito' %}">Depósito</a></li>
 {% endblock %}
 
 {% block content %}
-  <div class="mb-4">
-    <a href="#" class="btn btn-primary">Agregar Producto</a>
-  </div>
   <table class="table table-triped">
     <form id="searchform" action="{% url 'deposito' %}" method="get" accept-charset="utf-8">
       <thead class="thead">
@@ -35,11 +32,11 @@
         </tr>
       </thead>
       <tbody>
-        {% for item in deposito %}
+        {% for item in productos %}
           <tr>
-            <td>{{ item.item }}</td>
-            <td>{{ item.item.descripcion }}</td>
-            <td>{{ item.item.marca }}</td>
+            <td>{{ item.item_id }}</td>
+            <td>{{ item.descripcion }}</td>
+            <td>{{ item.marca }}</td>
             <td>{{ item.stock }}</td>
             <!-- <td  <span class="badge badge-default"> -->
             <!-- <a href="{% url 'edit_item' item.item_id %}">Edit</a></span></td> -->
