@@ -69,10 +69,13 @@ class ProductoListView(ListView):
     def get_queryset(self):
         result = super(ProductoListView, self).get_queryset()
         kitem_id = self.request.GET.get('item_id')
+        kbarcode = self.request.GET.get('barcode')
         kdescripcion = self.request.GET.get('descripcion')
         kmarca = self.request.GET.get('marca')
         if kitem_id:
             result = result.filter(item_id__contains=kitem_id)
+        if kbarcode:
+            result = result.filter(barcode=kbarcode)        
         if kdescripcion:
             kdescripcion = kdescripcion.upper()
             result = result.filter(descripcion__contains=kdescripcion)
@@ -180,10 +183,13 @@ class DepositoListView(ListView):
             stock__gt=0)
         filter
         kitem_id = self.request.GET.get('item_id')
+        kbarcode = self.request.GET.get('barcode')
         kdescripcion = self.request.GET.get('descripcion')
         kmarca = self.request.GET.get('marca')
         if kitem_id:
             result = result.filter(item_id__contains=kitem_id)
+        if kbarcode:
+            result = result.filter(barcode=kbarcode)
         if kdescripcion:
             kdescripcion = kdescripcion.upper()
             result = result.filter(descripcion__contains=kdescripcion)

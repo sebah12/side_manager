@@ -13,6 +13,9 @@
         <th><input class="searchfield" id="searchbox" name="item_id"
                    type="text" placeholder="ID">
         </th>
+        <th><input class="searchfield" id="searchbox" name="barcode"
+                   type="text" placeholder="BARCODE">
+        </th>
         <th><input class="searchfield" id="searchbox" name="descripcion"
                    type="text" placeholder="DESCRIPCION">
         </th>
@@ -25,6 +28,7 @@
         <thead class="thead-inverse">
         <tr>
           <th>ID</th>
+          <th>Barcode</th>
           <th>Descripción</th>
           <th>Marca</th>
           <th>Stock</th>
@@ -35,11 +39,12 @@
         {% for item in productos %}
           <tr>
             <td>{{ item.item_id }}</td>
+            <td>{{ item.barcode }}</td>
             <td>{{ item.descripcion }}</td>
             <td>{{ item.marca }}</td>
             <td>{{ item.stock }}</td>
-            <!-- <td  <span class="badge badge-default"> -->
-            <!-- <a href="{% url 'edit_item' item.item_id %}">Edit</a></span></td> -->
+            <td  <span class="badge badge-default">
+            <a href="{% url 'edit_item' item.item_id %}">Edit</a></span></td>
           </tr>
         {% endfor %}
       </tbody>
