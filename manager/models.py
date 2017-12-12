@@ -70,3 +70,15 @@ class Item(SoftDeletionModel):
 
     def __str__(self):
         return self.descripcion
+
+
+class ItemDeposito(SoftDeletionModel):
+    """Documentation for ItemDeposito
+
+    """
+    item = models.ForeignKey(
+        Item, related_name='deposito')
+    stock = models.IntegerField()
+
+    def __srt__(self, args):
+        return self.id
