@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Marca, Item
+from .models import Marca, Item, ItemDeposito
 from .forms import NewMarcaForm, NewProductForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.search import SearchQuery, SearchRank,SearchVector
@@ -165,3 +165,28 @@ class ItemDeleteView(DeleteView):
         success_url = 'productos'
         producto.delete()
         return HttpResponseRedirect(success_url)
+
+
+@method_decorator(login_required, name='dispatch')
+class DepositoListView(ListView):
+    model = ItemDeposito
+    context_object_name = 'deposito'
+    template_name = 'deposito.html'
+    ordering = 'item_id'
+    paginate_by = 10
+
+    def get_queryset(self):
+        result = super(DepositoListView, self).get_queryset()
+        kitem_id = self.request.GET.get('item_id')
+        kdescripcion = self.request.GET.get('descripcion')
+        kmarca = self.request.GET.get('marca')
+        if kitem_id:
+            result = result.filter(item__item_id__contains=kitem_id)
+        if kdescripcion:
+            kdescripcion = kdescripcion.upper()
+            result = result.filter(item__descripcion__contains=kdescripcion)
+        if kmarca:
+            kmarca = kmarca.upper()
+            result = result.filter(item__marca__nombre__contains=kmarca)
+
+        return result
