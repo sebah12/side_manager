@@ -41,6 +41,7 @@ urlpatterns = [
         views.ItemDeleteView.as_view(), name='delete_item'),
     url(r'^productos/new/$', views.new_item, name='new_item'),
     url(r'^productos/$', views.ProductoListView.as_view(), name='productos'),
+    url(r'^deposito/$', views.DepositoListView.as_view(), name='deposito'),
     url(r'^admin/', admin.site.urls),
     url(r'^settings/password/$',
         auth_views.PasswordChangeView.as_view(
