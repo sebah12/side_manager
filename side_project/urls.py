@@ -40,7 +40,7 @@ urlpatterns = [
     url(r'^productos/(?P<item_id>\d+)/delete/$',
         views.ItemDeleteView.as_view(), name='delete_item'),
     url(r'^productos/new/$', views.new_item, name='new_item'),
-    url(r'^productos/', views.ProductoListView.as_view(), name='productos'),
+    url(r'^productos/$', views.ProductoListView.as_view(), name='productos'),
     url(r'^admin/', admin.site.urls),
     url(r'^settings/password/$',
         auth_views.PasswordChangeView.as_view(

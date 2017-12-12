@@ -66,6 +66,22 @@ class ProductoListView(ListView):
     ordering = 'item_id'
     paginate_by = 10
 
+    def get_queryset(self):
+        result = super(ProductoListView, self).get_queryset()
+        kitem_id = self.request.GET.get('item_id')
+        kdescripcion = self.request.GET.get('descripcion')
+        kmarca = self.request.GET.get('marca')
+        if kitem_id:
+            result = result.filter(item_id__contains=kitem_id)
+        if kdescripcion:
+            kdescripcion = kdescripcion.upper()
+            result = result.filter(descripcion__contains=kdescripcion)
+        if kmarca:
+            kmarca = kmarca.upper()
+            result = result.filter(marca__nombre__contains=kmarca)
+
+        return result
+
 
 @login_required
 def new_item(request):
