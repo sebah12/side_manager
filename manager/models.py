@@ -66,7 +66,7 @@ class Item(SoftDeletionModel):
     descripcion = models.CharField(max_length=50)
     marca = models.ForeignKey(
         Marca, related_name='items', blank=True, null=True)
-    barcode = models.IntegerField(unique=True, blank=True, null=True)
+    barcode = models.BigIntegerField(unique=True, blank=True, null=True)
     stock = models.IntegerField(default=0)
 
     def __str__(self):
