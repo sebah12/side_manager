@@ -1,0 +1,6 @@
+{% load form_tags widget_tweaks %}
+
+<form id="searchform" action="{% url 'marcas' %}" method="get" accept-charset="utf-8">
+  <input class="searchfield" id="searchbox" name="nombre" type="text" placeholder="NOMBRE">
+  <button class="btn btn-success" type="submit">Search</button>
+    </form>
