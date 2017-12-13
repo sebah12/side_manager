@@ -6,10 +6,10 @@
 {% endblock %}
 
 {% block content %}
-  <div class="mb-4">
-    <a href="{% url 'new_item' %}" class="btn btn-success">Ingresar Producto</a>
-    <a href="{% url 'new_item' %}" class="btn btn-danger">Retirar Producto</a>
-  </div>
+  <!-- <div class="mb-4"> -->
+  <!--   <a href="{% url 'new_item' %}" class="btn btn-success">Ingresar Producto</a> -->
+  <!--   <a href="{% url 'new_item' %}" class="btn btn-danger">Retirar Producto</a> -->
+  <!-- </div> -->
   <table class="table table-triped">
     <form id="searchform" action="{% url 'deposito' %}" method="get" accept-charset="utf-8">
       <thead class="thead">
@@ -47,8 +47,13 @@
             <td>{{ item.descripcion }}</td>
             <td>{{ item.marca }}</td>
             <td>{{ item.stock }}</td>
-            <td  <span class="badge badge-default">
-            <a href="{% url 'edit_item' item.item_id %}">Edit</a></span></td>
+            <!-- <td  <span class="badge badge-default"> -->
+            <!-- <a href="{% url 'edit_item' item.item_id %}">Edit</a></span></td> -->
+            <td><a href="{% url 'edit_stock' item_id=item.item_id action='add' %}" class="btn btn-success
+                                                      btn-sm">Ingresar</a>
+              <a href="{% url 'edit_stock' item_id=item.item_id action='sub' %}" class="btn btn-danger
+                                                    btn-sm btn-block">Retirar</a>
+            </td>
           </tr>
         {% endfor %}
       </tbody>

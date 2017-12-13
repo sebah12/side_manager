@@ -1,5 +1,6 @@
 from django import forms
 from .models import Marca, Item
+from django.core.validators import ValidationError
 
 
 class NewMarcaForm(forms.ModelForm):
@@ -38,3 +39,21 @@ class NewProductForm(forms.ModelForm):
     class Meta:
         model = Item
         fields = ['item_id', 'descripcion', 'marca', 'barcode']
+
+
+class EditStockForm(forms.Form):
+
+    # def clean_cantidad(self, max_value=999):
+    #     cantidad = self.cleaned_data['cantidad']
+    #     if cantidad > max_value:
+    #         raise ValidationError("Limit can't exceed 999")
+    #     return cantidad
+    def __init__(self, *args, **kwargs):
+        self.maximo = kwargs.pop('max_value')
+        super(EditStockForm, self).__init__(*args, **kwargs)
+        self.fields['cantidad'] = forms.IntegerField(required=True,
+                                                     max_value=self.maximo,
+                                                     min_value=1)
+
+    cantidad = forms.IntegerField(required=True,
+                                  min_value=1)

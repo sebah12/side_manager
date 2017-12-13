@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Ingresar Producto{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'deposito' %}">Depósito</a></li>
+<li class="breadcrumb-item active">Producto {{ producto.item_id }}</li>
+<li class="breadcrumb-item active">Stock disponible = {{ producto.stock }}</li>
+{% endblock %}
+
+{% block content %}
+<form method="post" novalidate>
+    {% csrf_token %}
+    {{ form }}
+    {% if action == 'add' %}
+    <button type="submit" class="btn btn-success">Ingresar</button>
+    {% else %}
+    <button type="submit" class="btn btn-danger">Retirar</button>
+    {% endif %}
+    <a href="{% url 'deposito' %}" class="btn btn-outline-secondary" role="button">Cancel</a>
+</form>
+{% endblock %}

@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Marca, Item
-from .forms import NewMarcaForm, NewProductForm
+from .forms import NewMarcaForm, NewProductForm, EditStockForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.search import SearchQuery, SearchRank,SearchVector
 from django.views.generic import UpdateView, DeleteView, ListView
@@ -75,7 +75,7 @@ class ProductoListView(ListView):
         if kitem_id:
             result = result.filter(item_id__contains=kitem_id)
         if kbarcode:
-            result = result.filter(barcode=kbarcode)        
+            result = result.filter(barcode=kbarcode)
         if kdescripcion:
             kdescripcion = kdescripcion.upper()
             result = result.filter(descripcion__contains=kdescripcion)
@@ -175,12 +175,11 @@ class DepositoListView(ListView):
     model = Item
     context_object_name = 'productos'
     template_name = 'deposito.html'
-    ordering = 'item_id'
+    ordering = '-stock'
     paginate_by = 10
 
     def get_queryset(self):
-        result = super(DepositoListView, self).get_queryset().filter(
-            stock__gt=0)
+        result = super(DepositoListView, self).get_queryset()
         filter
         kitem_id = self.request.GET.get('item_id')
         kbarcode = self.request.GET.get('barcode')
@@ -198,3 +197,34 @@ class DepositoListView(ListView):
             result = result.filter(marca__nombre__contains=kmarca)
 
         return result
+
+
+@login_required
+def edit_stock(request, item_id, action):
+    producto = get_object_or_404(Item, item_id=item_id)
+    action = action
+    if action == 'add':
+        max_value = 2147483647 - producto.stock
+    else:
+        max_value = producto.stock
+    if request.method == 'POST':
+        form = EditStockForm(request.POST, max_value=max_value)
+        # form.fields['cantidad'].max_value = 99
+        # form.clean_cantidad(100)
+        if form.is_valid():
+            data = form.cleaned_data
+            amount = data['cantidad']
+            if action == 'add':
+                producto.stock += amount
+            else:
+                producto.stock -= amount
+            producto.save()
+            return redirect('deposito')
+    else:
+        form = EditStockForm(max_value=max_value)
+        # form.fields['cantidad'].validators = 99
+    if action:
+        return render(request, 'edit_stock.html', {'producto': producto,
+                                                   'action': action,
+                                                   'form': form})
+    return render(request, 'edit_stock.html', {'producto': producto})
