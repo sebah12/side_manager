@@ -5,9 +5,10 @@ from .models import Marca, Item
 from .forms import NewMarcaForm, NewProductForm, EditStockForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.search import SearchQuery, SearchRank,SearchVector
-from django.views.generic import UpdateView, DeleteView, ListView
+from django.views.generic import UpdateView, DeleteView, ListView, RedirectView
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
+from django.core.urlresolvers import reverse
 
 
 def home(request):
@@ -17,6 +18,16 @@ def home(request):
 @login_required
 def manager(request):
     return render(request, 'manager.html', {'manager': manager})
+
+
+@method_decorator(login_required, name='dispatch')
+class SearchProductRedirectView(RedirectView):
+    def get(self, request, *args, **kwargs):
+        barcode = self.kwargs.get('item_barcode', None)
+        item = Item.objects.get(barcode=barcode)
+        self.url = '/productos/%s/edit' % (item.item_id)
+        return super(SearchProductRedirectView, self).get(
+            request, *args, **kwargs)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -83,7 +94,7 @@ class ProductoListView(ListView):
             kmarca = kmarca.upper()
             result = result.filter(marca__nombre__contains=kmarca)
 
-        return result
+        return (result)
 
 
 @login_required
