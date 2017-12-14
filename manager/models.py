@@ -71,3 +71,22 @@ class Item(SoftDeletionModel):
 
     def __str__(self):
         return self.descripcion
+
+
+class Remito(SoftDeletionModel):
+    remito_id = models.IntegerField(primary_key=True)
+    notas = models.CharField(max_length=200)
+    created_by = models.ForeignKey(
+        User, related_name='remitos_preparados')
+    received_by = models.ForeignKey(
+        User, related_name='remitos_recibidos')
+    created_at = models.DateTimeField(blank=True, null=True)
+    received_at = models.DateTimeField(blank=True, null=True)
+
+
+class CampoRemito(models.Model):
+    campo_remito_id = models.IntegerField(primary_key=True)
+    remito = models.ForeignKey(
+        Remito, related_name='campos')
+    item = models.ForeignKey(
+        Item, related_name='+')

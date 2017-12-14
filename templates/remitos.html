@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load form_tags widget_tweaks %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{% url 'remitos' %}">Remitos</a></li>
+{% endblock %}
+
+{% block content %}
+  <div class="mb-4">
+    <a href="{% url 'remitos' %}" class="btn btn-success">Crear Remito</a>
+  </div>
+  <table class="table table-striped">
+    <form id="searchform" action="{% url 'remitos' %}" method="get" accept-charset="utf-8">
+      <thead class="thead">
+      <tr>
+        <th><input class="searchfield" id="searchbox" name="notas"
+                   type="text" placeholder="BUSCAR">
+        </th>
+        <td><button class="btn btn-primary" type="submit">Search</button></td>
+        </thead>
+    </form>
+    <thead class="thead-inverse">
+        <tr>
+          <th>Remito ID</th>
+          <th>Creado por</th>
+          <th>Fecha Creación</th>
+          <th>Recibido por</th>
+          <th>Fecha Recepción</th>
+          <th></th>
+        </tr>
+    </thead>
+    <tbody>
+      {% for remito in s %}
+      <tr>
+        <td>{{ remito.remito_id }}</td>
+        <td>{{ remito.created_by }}</td>
+        <td>{{ remito.created_at }}</td>
+        <td>{{ remito.received_by }}</td>
+        <td>{{ remito.received_at }}</td>
+        <td><span class="badge badge-default">
+            <a href="{% url 'remitos' %}">Ver</a></span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% include 'includes/pagination.html' %}
+{% endblock %}

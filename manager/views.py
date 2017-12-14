@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Marca, Item
+from .models import Marca, Item, Remito
 from .forms import NewMarcaForm, NewProductForm, EditStockForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.search import SearchQuery, SearchRank,SearchVector
@@ -244,3 +244,21 @@ def edit_stock(request, item_id, action):
                                                    'action': action,
                                                    'form': form})
     return render(request, 'edit_stock.html', {'producto': producto})
+
+
+@method_decorator(login_required, name='dispatch')
+class RemitoListView(ListView):
+    model = Remito
+    context_object_name = 'remitos'
+    template_name = 'remitos.html'
+    ordering = 'created_at'
+    paginate_by = 10
+
+    def get_queryset(self):
+        result = super(RemitoListView, self).get_queryset()
+        keywords = self.request.GET.get('notas')
+        if keywords:
+            keywords = keywords.upper()
+            result = result.filter(notas__contains=keywords)
+
+        return result

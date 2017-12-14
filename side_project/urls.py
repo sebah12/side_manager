@@ -45,6 +45,7 @@ urlpatterns = [
     url(r'^deposito/$', views.DepositoListView.as_view(), name='deposito'),
     url(r'^deposito/(?P<action>[-\w]+)-(?P<item_id>\d+)/edit_stock/$',
         views.edit_stock, name='edit_stock'),
+    url(r'^remitos/$', views.RemitoListView.as_view(), name='remitos'),
     url(r'^admin/', admin.site.urls),
     url(r'^settings/password/$',
         auth_views.PasswordChangeView.as_view(
