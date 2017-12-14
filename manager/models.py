@@ -79,7 +79,7 @@ class Remito(SoftDeletionModel):
     created_by = models.ForeignKey(
         User, related_name='remitos_preparados')
     received_by = models.ForeignKey(
-        User, related_name='remitos_recibidos')
+        User, related_name='remitos_recibidos', null=True)
     created_at = models.DateTimeField(blank=True, null=True)
     received_at = models.DateTimeField(blank=True, null=True)
 

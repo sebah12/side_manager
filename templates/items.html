@@ -49,8 +49,12 @@
             <td>{{ item.descripcion }}</td>
             <td>{{ item.marca }}</td>
             <td class="align-middle">0</td>
+            {% if user.is_superuser %}
             <td  <span class="badge badge-default">
-            <a href="{% url 'edit_item' item.item_id %}">Edit</a></span></td>
+                 <a href="{% url 'edit_item' item.item_id %}">Edit</a></span></td>
+            {% else %}
+            <td></td>
+        {% endif %}
           </tr>
         {% endfor %}
       </tbody>

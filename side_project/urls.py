@@ -28,7 +28,6 @@ urlpatterns = [
     url(r'^settings/account/$', accounts_views.UserUpdateView.as_view(),
         name='my_account'),
     url(r'^manager/', views.manager, name='manager'),
-    url(r'^marcas/', views.manager, name='manager'),
     url(r'^marcas/(?P<pk>\d+)/$', views.marca, name='marca'),
     url(r'^marcas/(?P<marca_id>\d+)/edit/$',
         views.MarcaUpdateView.as_view(), name='edit_marca'),
@@ -46,6 +45,8 @@ urlpatterns = [
     url(r'^deposito/(?P<action>[-\w]+)-(?P<item_id>\d+)/edit_stock/$',
         views.edit_stock, name='edit_stock'),
     url(r'^remitos/$', views.RemitoListView.as_view(), name='remitos'),
+    url(r'^remitos/(?P<remito_id>\d+)/$', views.remito, name='remito'),
+    url(r'^remitos/new/$', views.new_remito, name='new_remito'),
     url(r'^admin/', admin.site.urls),
     url(r'^settings/password/$',
         auth_views.PasswordChangeView.as_view(

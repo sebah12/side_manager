@@ -28,8 +28,12 @@
       {% for marca in marcas %}
       <tr>
         <td>{{ marca.nombre }}</td>
+        {% if user.is_superuser %}
         <td><span class="badge badge-default">
             <a href="{% url 'edit_marca' marca.marca_id %}">Edit</a></span></td>
+        {% else %}
+         <td></td>
+        {% endif %}
       </tr>
       {% endfor %}
     </tbody>

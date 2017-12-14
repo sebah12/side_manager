@@ -2,14 +2,15 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Marca, Item, Remito
-from .forms import NewMarcaForm, NewProductForm, EditStockForm
+from .forms import NewMarcaForm, NewProductForm, EditStockForm, NewRemitoForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.postgres.search import SearchQuery, SearchRank,SearchVector
 from django.views.generic import UpdateView, DeleteView, ListView, RedirectView
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from django.core.urlresolvers import reverse
-import qrcode
+import qrcode, datetime
 
 server = '192.168.1.106'
 
@@ -119,13 +120,21 @@ def new_item(request):
 
 
 @method_decorator(login_required, name='dispatch')
-class MarcaUpdateView(UpdateView):
+class MarcaUpdateView(UserPassesTestMixin, UpdateView):
+    permission_denied_message = 'Permission Denied'
     model = Marca
     fields = ('nombre', )
     template_name = 'edit_marca.html'
     pk_url_kwarg = 'marca_id'
     context_object_name = 'marca'
 
+    def test_func(self):
+        # print("checking if user passes test....")  
+        return self.request.user.is_staff
+
+    def handle_no_permission(self):
+        return redirect('manager')
+    
     def form_valid(self, form):
         marca = form.save(commit=False)
         marca.nombre = marca.nombre.upper()
@@ -134,12 +143,19 @@ class MarcaUpdateView(UpdateView):
 
 
 @method_decorator(login_required, name='dispatch')
-class MarcaDeleteView(DeleteView):
+class MarcaDeleteView(UserPassesTestMixin, DeleteView):
     model = Marca
     fields = ('nombre', )
     template_name = 'delete_marca.html'
     pk_url_kwarg = 'marca_id'
     context_object_name = 'marca'
+
+    def test_func(self):
+        # print("checking if user passes test....")  
+        return self.request.user.is_staff
+
+    def handle_no_permission(self):
+        return redirect('manager')
 
     def delete(self, request, *args, **kwargs):
         """
@@ -153,12 +169,19 @@ class MarcaDeleteView(DeleteView):
 
 
 @method_decorator(login_required, name='dispatch')
-class ItemUpdateView(UpdateView):
+class ItemUpdateView(UserPassesTestMixin, UpdateView):
     model = Item
     fields = ('descripcion', 'marca', 'barcode',)
     template_name = 'edit_item.html'
     pk_url_kwarg = 'item_id'
     context_object_name = 'producto'
+
+    def test_func(self):
+        # print("checking if user passes test....")  
+        return self.request.user.is_staff
+
+    def handle_no_permission(self):
+        return redirect('manager')
 
     def form_valid(self, form):
         producto = form.save(commit=False)
@@ -168,12 +191,19 @@ class ItemUpdateView(UpdateView):
 
 
 @method_decorator(login_required, name='dispatch')
-class ItemDeleteView(DeleteView):
+class ItemDeleteView(UserPassesTestMixin, DeleteView):
     model = Item
     fields = ('item_id', )
     template_name = 'delete_item.html'
     pk_url_kwarg = 'item_id'
     context_object_name = 'producto'
+
+    def test_func(self):
+        # print("checking if user passes test....")  
+        return self.request.user.is_staff
+
+    def handle_no_permission(self):
+        return redirect('manager')
 
     def delete(self, request, *args, **kwargs):
         """
@@ -258,7 +288,32 @@ class RemitoListView(ListView):
         result = super(RemitoListView, self).get_queryset()
         keywords = self.request.GET.get('notas')
         if keywords:
-            keywords = keywords.upper()
             result = result.filter(notas__contains=keywords)
 
         return result
+
+@login_required
+def new_remito(request):
+    if request.method == 'POST':
+        form = NewRemitoForm(request.POST)
+        if form.is_valid():
+            remito = form.save(commit=False)
+            remito.created_by = request.user
+            remito.created_at = datetime.datetime.now()
+            remito.save()
+            return redirect('remitos')
+    else:
+        form = NewRemitoForm()
+    return render(request, 'new_remito.html', {
+        'new_remito': new_remito, 'form': form})
+
+
+@login_required
+def remito(request, remito_id):
+    remito = get_object_or_404(Remito, remito_id=remito_id)
+    qr = qrcode.make('http://' + server + '/remito/'+ str(remito.remito_id))
+    response = HttpResponse(content_type="image/png")
+    
+    qr.save(response)
+    return response
+    return render(request, 'remito.html', {'remito': remito})
