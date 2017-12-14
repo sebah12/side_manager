@@ -311,9 +311,13 @@ def new_remito(request):
 @login_required
 def remito(request, remito_id):
     remito = get_object_or_404(Remito, remito_id=remito_id)
+    return render(request, 'remito.html', {'remito': remito})
+
+
+def remito_qr(request, remito_id):
+    remito = get_object_or_404(Remito, remito_id=remito_id)
     qr = qrcode.make('http://' + server + '/remito/'+ str(remito.remito_id))
     response = HttpResponse(content_type="image/png")
     
-    qr.save(response)
+    qr.save(response, "PNG")
     return response
-    return render(request, 'remito.html', {'remito': remito})

@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block content %}
-</div>
+<div>
 <table class="table table-triped">
   <tr>
     <th>Notas:</th>
@@ -32,4 +32,9 @@
     <th>Fecha de recepción:</th>
     <td> {{ remito.recieved_at }} </td>
   </tr>
+</div>
+<div>
+  <img style="-webkit-user-select: none; display: block; margin: auto; cursor: zoom-in;"
+       src="{% url 'remito_qr' remito.remito_id %}" width="331" height="331" />
+    </div>
 {% endblock %}
