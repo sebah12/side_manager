@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ remito.remito_id }} - {{ block.super }}
+{% endblock %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{% url 'remitos' %}">Remitos</a></li>
+  <li class="breadcrumb-item active">{{ remito.remito_id }}</li>
+{% endblock %}
+
+{% block content %}
+</div>
+<table class="table table-triped">
+  <tr>
+    <th>Notas:</th>
+    <td> {{ remito.notas }} </td>
+  </tr>
+  <tr>
+    <th>Creado por:</th>
+    <td> {{ remito.created_by }} </td>
+  </tr>
+  <tr>
+    <th>Fecha de creación:</th>
+    <td> {{ remito.created_at }} </td>
+  </tr>
+  <tr>
+    <th>Recibido por:</th>
+    <td> {{ remito.recieved_by }} </td>
+  </tr>
+  <tr>
+    <th>Fecha de recepción:</th>
+    <td> {{ remito.recieved_at }} </td>
+  </tr>
+{% endblock %}
