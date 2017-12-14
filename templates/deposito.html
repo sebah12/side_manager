@@ -51,10 +51,17 @@
             <td>{{ item.stock }}</td>
             <!-- <td  <span class="badge badge-default"> -->
             <!-- <a href="{% url 'edit_item' item.item_id %}">Edit</a></span></td> -->
-            <td><a href="{% url 'edit_stock' item_id=item.item_id action='add' %}" class="btn btn-success
-                                                      btn-sm">Ingresar</a>
-              <a href="{% url 'edit_stock' item_id=item.item_id action='sub' %}" class="btn btn-danger
-                                                    btn-sm btn-block">Retirar</a>
+            <td><a href="{% url 'edit_stock' item_id=item.item_id action='add' %}
+                         " class="btn btn-success btn-sm btn-block">Ingresar</a>
+              {% if item.stock %}
+              <a href="{% url 'edit_stock' item_id=item.item_id action='sub' %}"
+                 class="btn btn-warning btn-sm btn-block">Retirar</a>
+              {% else %}
+              <a href="{% url 'edit_stock' item_id=item.item_id action='sub' %}"
+                 class="btn btn-warning btn-sm btn-block disabled"
+                 aria-disabled="true">
+                Retirar</a>
+              {% endif %}
             </td>
           </tr>
         {% endfor %}
