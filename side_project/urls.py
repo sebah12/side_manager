@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^settings/account/$', accounts_views.UserUpdateView.as_view(),
         name='my_account'),
     url(r'^manager/', views.manager, name='manager'),
+    url(r'^marcas/', views.manager, name='manager'),
     url(r'^marcas/(?P<pk>\d+)/$', views.marca, name='marca'),
     url(r'^marcas/(?P<marca_id>\d+)/edit/$',
         views.MarcaUpdateView.as_view(), name='edit_marca'),

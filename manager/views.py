@@ -9,11 +9,16 @@ from django.views.generic import UpdateView, DeleteView, ListView, RedirectView
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from django.core.urlresolvers import reverse
+import qrcode
 
+server = '192.168.1.106'
 
 def home(request):
-    return HttpResponse('Hello, World!')
-
+    qr = qrcode.make('http://' + server + '/productos')
+    response = HttpResponse(content_type="image/png")
+    
+    qr.save(response)
+    return response
 
 @login_required
 def manager(request):
