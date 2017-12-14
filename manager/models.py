@@ -74,7 +74,7 @@ class Item(SoftDeletionModel):
 
 
 class Remito(SoftDeletionModel):
-    remito_id = models.IntegerField(primary_key=True)
+    remito_id = models.AutoField(primary_key=True)
     notas = models.CharField(max_length=200)
     created_by = models.ForeignKey(
         User, related_name='remitos_preparados')
@@ -85,7 +85,7 @@ class Remito(SoftDeletionModel):
 
 
 class CampoRemito(models.Model):
-    campo_remito_id = models.IntegerField(primary_key=True)
+    campo_remito_id = models.AutoField(primary_key=True)
     remito = models.ForeignKey(
         Remito, related_name='campos')
     item = models.ForeignKey(
