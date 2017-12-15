@@ -12,7 +12,8 @@ from django.urls import reverse_lazy
 from django.core.urlresolvers import reverse
 import qrcode, datetime
 
-server = '192.168.1.106'
+server = '10.5.44.89'
+# server = 'localhost'
 
 def home(request):
     qr = qrcode.make('http://' + server + '/productos')
