@@ -12,7 +12,7 @@ from django.urls import reverse_lazy
 from django.core.urlresolvers import reverse
 import qrcode, datetime
 
-server = '10.5.44.89'
+server = 'www.sidelectricidad.co'
 # server = 'localhost'
 
 def home(request):
