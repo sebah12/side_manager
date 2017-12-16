@@ -11,17 +11,18 @@ from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from django.core.urlresolvers import reverse
 import qrcode, datetime
+from side_project import settings
 
-# server = 'www.sidelectricidad.com'
-server = 'localhost'
+server = settings.server
+
 
 def home(request):
-    qr = qrcode.make('http://' + server + '/productos')
+    qr = qrcode.make('http://' + server + '/manager')
     response = HttpResponse(content_type="image/png")
-    
+      
     qr.save(response)
     return response
-
+    
 @login_required
 def manager(request):
     return render(request, 'manager.html', {'manager': manager})

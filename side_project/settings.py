@@ -133,3 +133,8 @@ LOGOUT_REDIRECT_URL = 'manager'
 LOGIN_REDIRECT_URL = 'manager'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_URL = 'login'
+
+if DEBUG:
+    server = 'localhost'
+else:
+    server = 'www.sidelectricidad.com'
