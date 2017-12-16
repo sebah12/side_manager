@@ -14,7 +14,8 @@ import qrcode, datetime
 from side_project import settings
 
 server = settings.server
-
+qr_dir1 = 'http://zxing.appspot.com/scan?ret=http%3A%2F%2F' + server + ':8000'
+qr_dir2 = '%2F?barcode%3D%7BCODE%7D&%2F&SCAN_FORMATS=UPC_A,EAN_13'
 
 def home(request):
     qr = qrcode.make('http://' + server + '/manager')
@@ -84,6 +85,13 @@ class ProductoListView(ListView):
     template_name = 'items.html'
     ordering = 'item_id'
     paginate_by = 10
+    
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(ProductoListView, self).get_context_data(**kwargs)
+        # Get the blog from id and add it to the context
+        context['qrdir'] = qr_dir1 + '%2Fproductos' + qr_dir2
+        return context    
 
     def get_queryset(self):
         result = super(ProductoListView, self).get_queryset()
@@ -226,9 +234,15 @@ class DepositoListView(ListView):
     ordering = '-stock'
     paginate_by = 10
 
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(DepositoListView, self).get_context_data(**kwargs)
+        # Get the blog from id and add it to the context
+        context['qrdir'] = qr_dir1 + '%2Fdeposito' + qr_dir2
+        return context    
+
     def get_queryset(self):
         result = super(DepositoListView, self).get_queryset()
-        filter
         kitem_id = self.request.GET.get('item_id')
         kbarcode = self.request.GET.get('barcode')
         kdescripcion = self.request.GET.get('descripcion')
@@ -303,7 +317,8 @@ def new_remito(request):
             remito.created_by = request.user
             remito.created_at = datetime.datetime.now()
             remito.save()
-            return redirect('remitos')
+            return render(request, 'new_remito_field', {
+                'remito_id': remito.remito_id})
     else:
         form = NewRemitoForm()
     return render(request, 'new_remito.html', {
@@ -323,3 +338,41 @@ def remito_qr(request, remito_id):
     
     qr.save(response, "PNG")
     return response
+
+
+@method_decorator(login_required, name='dispatch')
+class RemitoNewFieldListView(ListView):
+    model = Item
+    context_object_name = 'productos'
+    template_name = 'new_remito_field.html'
+    ordering = '-item_id'
+    paginate_by = 10
+    
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(RemitoNewFieldListView, self).get_context_data(**kwargs)
+        # Get the blog from id and add it to the context
+        context['remito_id'] = self.kwargs['remito_id']
+        context['qrdir'] = qr_dir1 + '%2Fremitos%2Fnew_field%2F' + str(
+            self.kwargs['remito_id']) + qr_dir2
+        return context
+
+    def get_queryset(self):
+        result = super(RemitoNewFieldListView, self).get_queryset()
+        result = result.filter(stock__gt=0)
+        kitem_id = self.request.GET.get('item_id')
+        kbarcode = self.request.GET.get('barcode')
+        kdescripcion = self.request.GET.get('descripcion')
+        kmarca = self.request.GET.get('marca')
+        if kitem_id:
+            result = result.filter(item_id__contains=kitem_id)
+        if kbarcode:
+            result = result.filter(barcode=kbarcode)
+        if kdescripcion:
+            kdescripcion = kdescripcion.upper()
+            result = result.filter(descripcion__contains=kdescripcion)
+        if kmarca:
+            kmarca = kmarca.upper()
+            result = result.filter(marca__nombre__contains=kmarca)
+
+        return result
