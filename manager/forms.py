@@ -34,7 +34,7 @@ class NewProductForm(forms.ModelForm):
     marca = forms.TypedChoiceField(
         choices=get_my_choices())
     barcode = forms.NumberInput()
-    marca = Marca.objects.get(marca_id=7)
+    marca = 1
 
     class Meta:
         model = Item
