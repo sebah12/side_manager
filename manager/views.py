@@ -318,7 +318,7 @@ def remito(request, remito_id):
 
 def remito_qr(request, remito_id):
     remito = get_object_or_404(Remito, remito_id=remito_id)
-    qr = qrcode.make('http://' + server + '/remito/'+ str(remito.remito_id))
+    qr = qrcode.make('http://' + server + '/remitos/'+ str(remito.remito_id))
     response = HttpResponse(content_type="image/png")
     
     qr.save(response, "PNG")
