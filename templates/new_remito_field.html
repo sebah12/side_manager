@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load form_tags widget_tweaks %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item active">Nuevo Remito</a></li>
+<li class="breadcrumb-item active">Remito {{ remito_id }}</a></li>
+{% endblock %}
+
+{% block content %}
+  <!-- <div class="mb-4"> -->
+  <!--   <a href="{% url 'new_item' %}" class="btn btn-success">Ingresar Producto</a> -->
+  <!--   <a href="{% url 'new_item' %}" class="btn btn-danger">Retirar Producto</a> -->
+  <!-- </div> -->
+  <table class="table table-triped">
+    <form id="searchform" action="{% url 'new_remito_field' remito_id  %}" method="get" accept-charset="utf-8">
+      <thead class="thead">
+      <tr>
+        <th><input class="searchfield" id="searchbox" name="item_id"
+                   type="text" placeholder="ID">
+        </th>
+        <th><input class="searchfield" id="searchbox" name="barcode"
+                   type="text" placeholder="BARCODE">
+        </th>
+        <td><a href="{{ qrdir }}" class="btn btn-primary">
+            Scan</a></td>
+        <th><input class="searchfield" id="searchbox" name="descripcion"
+                   type="text" placeholder="DESCRIPCION">
+        </th>
+        <th><input class="searchfield" id="searchbox" name="marca"
+                   type="text" placeholder="MARCA">
+        </th>
+        <td><button class="btn btn-primary" type="submit">Search</button></td>
+        </thead>
+    </form>
+        <thead class="thead-inverse">
+        <tr>
+          <th>ID</th>
+          <th>Barcode</th>
+          <th>Descripción</th>
+          <th>Marca</th>
+          <th>Stock</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in productos %}
+          <tr>
+            <td>{{ item.item_id }}</td>
+            <td>{{ item.barcode }}</td>
+            <td>{{ item.descripcion }}</td>
+            <td>{{ item.marca }}</td>
+            <td>{{ item.stock }}</td>
+            <!-- <td  <span class="badge badge-default"> -->
+            <!-- <a href="{% url 'edit_item' item.item_id %}">Edit</a></span></td> -->
+            <td><a href="{% url 'edit_stock' item_id=item.item_id action='add' %}
+                         " class="btn btn-success btn-sm btn-block">Ingresar</a>
+              {% if item.stock %}
+              <a href="{% url 'edit_stock' item_id=item.item_id action='sub' %}"
+                 class="btn btn-warning btn-sm btn-block">Retirar</a>
+              {% else %}
+              <a href="{% url 'edit_stock' item_id=item.item_id action='sub' %}"
+                 class="btn btn-warning btn-sm btn-block disabled"
+                 aria-disabled="true">
+                Retirar</a>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+      </table>
+{% include 'includes/pagination.html' %}
+{% endblock %}

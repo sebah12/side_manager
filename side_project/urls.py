@@ -48,6 +48,8 @@ urlpatterns = [
     url(r'^remitos/(?P<remito_id>\d+)/$', views.remito, name='remito'),
     url(r'^remitos/new/$', views.new_remito, name='new_remito'),
     url(r'^remitos/qr/(?P<remito_id>\d+)/$', views.remito_qr, name='remito_qr'),
+    url(r'^remitos/(?P<remito_id>\d+)/new_field/$', views.RemitoNewFieldListView.as_view(),
+        name='new_remito_field'),
     url(r'^admin/', admin.site.urls),
     url(r'^settings/password/$',
         auth_views.PasswordChangeView.as_view(
