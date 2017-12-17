@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Marca, Item, Remito, CampoRemito
+from .models import Marca, Item, Remito, CampoRemito, ItemLogs
 from .forms import NewMarcaForm, NewProductForm, EditStockForm, NewRemitoForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin

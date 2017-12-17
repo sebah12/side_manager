@@ -91,3 +91,14 @@ class CampoRemito(models.Model):
     item = models.ForeignKey(
         Item, related_name='+')
     cantidad = models.IntegerField(default=0)
+
+
+class ItemLogs(SoftDeletionModel):
+    item_log_id = models.AutoField(primary_key=True)
+    item = models.ForeignKey(
+        Item, related_name='logs')
+    cantidad = models.IntegerField(default=0)
+    created_by = models.ForeignKey(
+        User, related_name='logs_emitidos')
+    created_at = models.DateTimeField()
+    action = models.BooleanField()
