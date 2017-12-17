@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
-{% block title %}
-  {{ remito.remito_id }} - {{ block.super }}
-{% endblock %}
+{% load widget_tweaks %}
+
+{% block title %}Editar Remito{% endblock %}
 
 {% block breadcrumb %}
   <li class="breadcrumb-item"><a href="{% url 'remitos' %}">Remitos</a></li>
-  <li class="breadcrumb-item active">{{ remito.remito_id }}</li>
+  <li class="breadcrumb-item active">Remito {{ remito.remito_id }}</li>
 {% endblock %}
 
 {% block content %}
@@ -26,14 +26,28 @@
   </tr>
   <tr>
     <th>Recibido por:</th>
-    <td> {{ remito.recieved_by }} </td>
+    <td> {{ remito.received_by }} </td>
   </tr>
   <tr>
     <th>Fecha de recepción:</th>
-    <td> {{ remito.recieved_at }} </td>
+    <td> {{ remito.received_at }} </td>
   </tr>
 </table>
 </div>
+{% if action == "ver" %}
+{% if not remito.received_at %}
+    <a href="{% url 'remito_receive' remito.remito_id %}"
+       class="btn btn-success">Confirmar Recepción</a>
+    {% endif %}
+{% else %}
+<div>
+    <a href="{% url 'new_remito_field' remito.remito_id %}"
+       class="btn btn-success">Agregar Campo</a>
+    <a href="{% url 'edit_remito' remito_id=remito.remito_id action='ver' %}"
+       class="btn btn-warning">Finalizar</a>
+</div>
+{% endif %}
+
 <div>
   <img style="-webkit-user-select: none; display: block; margin: auto; cursor: zoom-in;"
        src="{% url 'remito_qr' remito.remito_id %}" width="131" height="131" />
@@ -63,4 +77,5 @@
     </tbody>
   </table>
 </div>
+{% include 'includes/pagination.html' %}
 {% endblock %}

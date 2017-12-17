@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Marca, Item, Remito
+from .models import Marca, Item, Remito, CampoRemito
 from .forms import NewMarcaForm, NewProductForm, EditStockForm, NewRemitoForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -89,7 +89,6 @@ class ProductoListView(ListView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(ProductoListView, self).get_context_data(**kwargs)
-        # Get the blog from id and add it to the context
         context['qrdir'] = qr_dir1 + '%2Fproductos' + qr_dir2
         return context    
 
@@ -237,7 +236,6 @@ class DepositoListView(ListView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(DepositoListView, self).get_context_data(**kwargs)
-        # Get the blog from id and add it to the context
         context['qrdir'] = qr_dir1 + '%2Fdeposito' + qr_dir2
         return context    
 
@@ -308,6 +306,7 @@ class RemitoListView(ListView):
 
         return result
 
+
 @login_required
 def new_remito(request):
     if request.method == 'POST':
@@ -317,23 +316,16 @@ def new_remito(request):
             remito.created_by = request.user
             remito.created_at = datetime.datetime.now()
             remito.save()
-            return render(request, 'new_remito_field', {
-                'remito_id': remito.remito_id})
+            return redirect('/remitos/%s-edit' % (remito.remito_id))
     else:
         form = NewRemitoForm()
     return render(request, 'new_remito.html', {
         'new_remito': new_remito, 'form': form})
 
 
-@login_required
-def remito(request, remito_id):
-    remito = get_object_or_404(Remito, remito_id=remito_id)
-    return render(request, 'remito.html', {'remito': remito})
-
-
 def remito_qr(request, remito_id):
     remito = get_object_or_404(Remito, remito_id=remito_id)
-    qr = qrcode.make('http://' + server + '/remitos/'+ str(remito.remito_id))
+    qr = qrcode.make('http://' + server + '/remitos/'+ str(remito.remito_id)+ '-ver')
     response = HttpResponse(content_type="image/png")
     
     qr.save(response, "PNG")
@@ -351,10 +343,7 @@ class RemitoNewFieldListView(ListView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(RemitoNewFieldListView, self).get_context_data(**kwargs)
-        # Get the blog from id and add it to the context
         context['remito_id'] = self.kwargs['remito_id']
-        context['qrdir'] = qr_dir1 + '%2Fremitos%2Fnew_field%2F' + str(
-            self.kwargs['remito_id']) + qr_dir2
         return context
 
     def get_queryset(self):
@@ -376,3 +365,64 @@ class RemitoNewFieldListView(ListView):
             result = result.filter(marca__nombre__contains=kmarca)
 
         return result
+
+
+@method_decorator(login_required, name='dispatch')
+class RemitoEditListView(ListView):
+    model = CampoRemito
+    context_object_name = 'fields'
+    template_name = 'edit_remito.html'
+    ordering = 'item_id'
+    paginate_by = 20
+    
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(RemitoEditListView, self).get_context_data(**kwargs)
+        context['remito'] = Remito.objects.get(remito_id=self.kwargs['remito_id'])
+        context['remito_id'] = self.kwargs['remito_id']
+        context['action'] = self.kwargs['action']
+        return context
+
+    def get_queryset(self):
+        result = super(RemitoEditListView, self).get_queryset()
+        result = result.filter(remito_id=self.kwargs['remito_id'])
+        return result    
+
+
+@method_decorator(login_required, name='dispatch')
+class RemitoFieldRedirectView(RedirectView):
+    def get(self, request, *args, **kwargs):
+        remito = self.kwargs.get('remito_id')
+        remito = Remito.objects.get(remito_id=remito)
+        item = self.kwargs.get('item_id')
+        value = 'cantidad_' + str(item)
+        item  = Item.objects.get(item_id=item)
+        cantidad = request.GET[value]
+        if item.stock > int(cantidad):
+            item.stock -= int(cantidad)
+        else:
+            cantidad = item.stock
+            item.stock = 0
+        item.save()
+        campo_remito = CampoRemito()
+        campo_remito.item = item
+        campo_remito.remito = remito
+        campo_remito.cantidad = int(cantidad)
+        campo_remito.save()
+        self.url = '/remitos/%s-edit' % (remito.remito_id)
+        return super(RemitoFieldRedirectView, self).get(
+            request, *args, **kwargs)
+
+
+@method_decorator(login_required, name='dispatch')
+class RemitoRecepcionRedirectView(RedirectView):
+    def get(self, request, *args, **kwargs):
+        remito = self.kwargs.get('remito_id')
+        remito = Remito.objects.get(remito_id=remito)
+        if not remito.received_at:
+            remito.received_by = self.request.user
+            remito.received_at = datetime.datetime.now()
+            remito.save()
+        self.url = '/remitos/%s-ver' % (remito.remito_id)
+        return super(RemitoRecepcionRedirectView, self).get(
+            request, *args, **kwargs)    

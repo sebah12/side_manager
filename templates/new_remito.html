@@ -14,5 +14,6 @@
     {% csrf_token %}
     {% include 'includes/form.html' %}
     <button type="submit" class="btn btn-success">Crear</button>
-  </form>
+    <a href="{% url 'remitos' %}" class="btn btn-warning">Cancelar</a>
+</form>
 {% endblock %}

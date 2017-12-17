@@ -90,3 +90,4 @@ class CampoRemito(models.Model):
         Remito, related_name='campos')
     item = models.ForeignKey(
         Item, related_name='+')
+    cantidad = models.IntegerField(default=0)

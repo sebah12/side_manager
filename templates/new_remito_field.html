@@ -7,11 +7,7 @@
 {% endblock %}
 
 {% block content %}
-  <!-- <div class="mb-4"> -->
-  <!--   <a href="{% url 'new_item' %}" class="btn btn-success">Ingresar Producto</a> -->
-  <!--   <a href="{% url 'new_item' %}" class="btn btn-danger">Retirar Producto</a> -->
-  <!-- </div> -->
-  <table class="table table-triped">
+<table class="table table-triped table-sm table-responsive" >
     <form id="searchform" action="{% url 'new_remito_field' remito_id  %}" method="get" accept-charset="utf-8">
       <thead class="thead">
       <tr>
@@ -39,6 +35,7 @@
           <th>Descripción</th>
           <th>Marca</th>
           <th>Stock</th>
+          <th>Cantidad</th>
           <th></th>
         </tr>
       </thead>
@@ -50,23 +47,17 @@
             <td>{{ item.descripcion }}</td>
             <td>{{ item.marca }}</td>
             <td>{{ item.stock }}</td>
-            <!-- <td  <span class="badge badge-default"> -->
-            <!-- <a href="{% url 'edit_item' item.item_id %}">Edit</a></span></td> -->
-            <td><a href="{% url 'edit_stock' item_id=item.item_id action='add' %}
-                         " class="btn btn-success btn-sm btn-block">Ingresar</a>
-              {% if item.stock %}
-              <a href="{% url 'edit_stock' item_id=item.item_id action='sub' %}"
-                 class="btn btn-warning btn-sm btn-block">Retirar</a>
-              {% else %}
-              <a href="{% url 'edit_stock' item_id=item.item_id action='sub' %}"
-                 class="btn btn-warning btn-sm btn-block disabled"
-                 aria-disabled="true">
-                Retirar</a>
-              {% endif %}
+            <form id="addform" action="{% url 'remito_field' item_id=item.item_id remito_id=remito_id  %}" method="get" accept-charset="utf-8">
+            <td><input class="inputfield"  name="cantidad_{{ item.item_id }}"
+                         type="number" placeholder="CANTIDAD">
             </td>
+            <td>
+              <button class="btn btn-primary" type="submit">Agregar</button>
+            </td>
+            </form>
           </tr>
         {% endfor %}
       </tbody>
-      </table>
+  </table>
 {% include 'includes/pagination.html' %}
 {% endblock %}
