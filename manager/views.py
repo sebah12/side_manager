@@ -5,25 +5,28 @@ from .models import Marca, Item, Remito, CampoRemito, ItemLogs
 from .forms import NewMarcaForm, NewProductForm, EditStockForm, NewRemitoForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.contrib.postgres.search import SearchQuery, SearchRank,SearchVector
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from django.views.generic import UpdateView, DeleteView, ListView, RedirectView
 from django.utils.decorators import method_decorator
-from django.urls import reverse_lazy
 from django.core.urlresolvers import reverse
-import qrcode, datetime
+import qrcode
+import datetime
 from side_project import settings
 
 server = settings.server
-qr_dir1 = 'http://zxing.appspot.com/scan?ret=http%3A%2F%2F' + server + ':8000'
+qr_dir1 = 'http://zxing.appspot.com/scan?ret=http%3A%2F%2F' + server
+if settings.DEBUG:
+    qr_dir1 = qr_dir1 + ':8000'
 qr_dir2 = '%2F?barcode%3D%7BCODE%7D&%2F&SCAN_FORMATS=UPC_A,EAN_13'
+
 
 def home(request):
     qr = qrcode.make('http://' + server + '/manager')
     response = HttpResponse(content_type="image/png")
-      
     qr.save(response)
     return response
-    
+
+
 @login_required
 def manager(request):
     return render(request, 'manager.html', {'manager': manager})
@@ -85,12 +88,12 @@ class ProductoListView(ListView):
     template_name = 'items.html'
     ordering = 'item_id'
     paginate_by = 10
-    
+
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(ProductoListView, self).get_context_data(**kwargs)
         context['qrdir'] = qr_dir1 + '%2Fproductos' + qr_dir2
-        return context    
+        return context
 
     def get_queryset(self):
         result = super(ProductoListView, self).get_queryset()
@@ -111,6 +114,7 @@ class ProductoListView(ListView):
 
         return (result)
 
+
 @method_decorator(login_required, name='dispatch')
 class ProductoDetailListView(ListView):
     model = ItemLogs
@@ -118,12 +122,13 @@ class ProductoDetailListView(ListView):
     template_name = 'item.html'
     ordering = 'created_at'
     paginate_by = 20
-    
+
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        context = super(ProductoDetailListView, self).get_context_data(**kwargs)
+        context = super(ProductoDetailListView, self).get_context_data(
+            **kwargs)
         context['item'] = Item.objects.get(item_id=self.kwargs['item_id'])
-        return context    
+        return context
 
     def get_queryset(self):
         result = super(ProductoDetailListView, self).get_queryset()
@@ -157,12 +162,12 @@ class MarcaUpdateView(UserPassesTestMixin, UpdateView):
     context_object_name = 'marca'
 
     def test_func(self):
-        # print("checking if user passes test....")  
+        # print("checking if user passes test....")
         return self.request.user.is_staff
 
     def handle_no_permission(self):
         return redirect('manager')
-    
+
     def form_valid(self, form):
         marca = form.save(commit=False)
         marca.nombre = marca.nombre.upper()
@@ -179,7 +184,7 @@ class MarcaDeleteView(UserPassesTestMixin, DeleteView):
     context_object_name = 'marca'
 
     def test_func(self):
-        # print("checking if user passes test....")  
+        # print("checking if user passes test....")
         return self.request.user.is_staff
 
     def handle_no_permission(self):
@@ -205,7 +210,7 @@ class ItemUpdateView(UserPassesTestMixin, UpdateView):
     context_object_name = 'producto'
 
     def test_func(self):
-        # print("checking if user passes test....")  
+        # print("checking if user passes test....")
         return self.request.user.is_staff
 
     def handle_no_permission(self):
@@ -227,7 +232,7 @@ class ItemDeleteView(UserPassesTestMixin, DeleteView):
     context_object_name = 'producto'
 
     def test_func(self):
-        # print("checking if user passes test....")  
+        # print("checking if user passes test....")
         return self.request.user.is_staff
 
     def handle_no_permission(self):
@@ -256,7 +261,7 @@ class DepositoListView(ListView):
         # Call the base implementation first to get a context
         context = super(DepositoListView, self).get_context_data(**kwargs)
         context['qrdir'] = qr_dir1 + '%2Fdeposito' + qr_dir2
-        return context    
+        return context
 
     def get_queryset(self):
         result = super(DepositoListView, self).get_queryset()
@@ -274,7 +279,6 @@ class DepositoListView(ListView):
         if kmarca:
             kmarca = kmarca.upper()
             result = result.filter(marca__nombre__contains=kmarca)
-
         return result
 
 
@@ -352,9 +356,9 @@ def new_remito(request):
 
 def remito_qr(request, remito_id):
     remito = get_object_or_404(Remito, remito_id=remito_id)
-    qr = qrcode.make('http://' + server + '/remitos/'+ str(remito.remito_id)+ '-ver')
+    qr = qrcode.make('http://' + server + '/remitos/' +
+                     str(remito.remito_id) + '-ver')
     response = HttpResponse(content_type="image/png")
-    
     qr.save(response, "PNG")
     return response
 
@@ -366,10 +370,11 @@ class RemitoNewFieldListView(ListView):
     template_name = 'new_remito_field.html'
     ordering = '-item_id'
     paginate_by = 10
-    
+
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        context = super(RemitoNewFieldListView, self).get_context_data(**kwargs)
+        context = super(RemitoNewFieldListView, self).get_context_data(
+            **kwargs)
         context['remito_id'] = self.kwargs['remito_id']
         return context
 
@@ -401,11 +406,12 @@ class RemitoEditListView(ListView):
     template_name = 'edit_remito.html'
     ordering = 'item_id'
     paginate_by = 20
-    
+
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(RemitoEditListView, self).get_context_data(**kwargs)
-        context['remito'] = Remito.objects.get(remito_id=self.kwargs['remito_id'])
+        context['remito'] = Remito.objects.get(
+            remito_id=self.kwargs['remito_id'])
         context['remito_id'] = self.kwargs['remito_id']
         context['action'] = self.kwargs['action']
         return context
@@ -413,7 +419,7 @@ class RemitoEditListView(ListView):
     def get_queryset(self):
         result = super(RemitoEditListView, self).get_queryset()
         result = result.filter(remito_id=self.kwargs['remito_id'])
-        return result    
+        return result
 
 
 @method_decorator(login_required, name='dispatch')
@@ -423,7 +429,7 @@ class RemitoFieldRedirectView(RedirectView):
         remito = Remito.objects.get(remito_id=remito)
         item = self.kwargs.get('item_id')
         value = 'cantidad_' + str(item)
-        item  = Item.objects.get(item_id=item)
+        item = Item.objects.get(item_id=item)
         cantidad = request.GET[value]
         if item.stock > int(cantidad):
             item.stock -= int(cantidad)
@@ -436,7 +442,7 @@ class RemitoFieldRedirectView(RedirectView):
         log.created_by = request.user
         log.created_at = datetime.datetime.now()
         log.item = item
-        log.action = 0    
+        log.action = 0
         log.save()
         campo_remito = CampoRemito()
         campo_remito.item = item
@@ -459,7 +465,7 @@ class RemitoRecepcionRedirectView(RedirectView):
             remito.save()
         self.url = '/remitos/%s-ver' % (remito.remito_id)
         return super(RemitoRecepcionRedirectView, self).get(
-            request, *args, **kwargs)    
+            request, *args, **kwargs)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -477,4 +483,4 @@ class ItemLogsListView(ListView):
         #     keywords = keywords.upper()
         #     result = result.filter(nombre__contains=keywords)
 
-        return result    
+        return result
