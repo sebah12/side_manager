@@ -5,35 +5,31 @@
   <li class="breadcrumb-item active"><a href="{% url 'productos' %}">Productos</a></li>
 {% endblock %}
 
-{% block content %}
+  {% block content %}
+
   <div class="mb-4">
     <a href="{% url 'new_item' %}" class="btn btn-success">Agregar Producto</a>
   </div>
-  <table class="table table-triped table-sm table-responsive" >
-    <form id="searchform" action="{% url 'productos' %}" method="get" accept-charset="utf-8">
-      <thead class="thead">
-      <tr>
-        <th><input class="searchfield" id="searchbox" name="item_id"
-                   type="text" placeholder="ID">
-        </th>
-        <th><input class="searchfield" id="searchbox" name="barcode"
-                   type="text" placeholder="BARCODE">
-        </th>
-        <td><a href="{{ qrdir }}" class="btn btn-primary">
-            Scan</a></td>
-        <th><input class="searchfield" id="searchbox" name="descripcion"
-                   type="text" placeholder="DESCRIPCION">
-        </th>
-        <th><input class="searchfield" id="searchbox" name="marca"
-                   type="text" placeholder="MARCA">
-        </th>
-        <td><button class="btn btn-primary" type="submit">Buscar</button></td>
-        </tr>
-        </thead>
-    </form>
+  <div class="mb-4">
+  <form class="form-inline " action="{% url 'productos' %}" method="get"
+        accept-charset="utf-8">
+    <input type="number" class="form-control mb-2 mr-sm-2 mb-sm-0"
+           id="inlineFormInput" name="item_id" placeholder="ID">
+        <input type="number" class="form-control" id="inlineFormInput"
+              name="barcode" placeholder="BARCODE">
+        <a href="{{ qrdir }}" class="btn btn-primary">
+            Scan</a>
+        <input type="text" class="form-control ml-2 mb-2 mr-sm-2 mb-sm-0" id="inlineFormInput"
+               name="descripcion" placeholder="DESCRIPCION">
+       <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="inlineFormInput"
+              name="marca" placeholder="MARCA">
+       <button class="btn btn-primary" type="submit">Buscar</button>
+  </form>
+  </div>
+    <table class="table table-triped table-responsive" >
         <thead class="thead-inverse">
         <tr>
-          <th>ID</th>
+          <th width="10%">ID</th>
           <th>Barcode</th>
           <th>Descripción</th>
           <th>Marca</th>
