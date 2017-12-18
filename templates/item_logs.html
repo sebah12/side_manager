@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load form_tags widget_tweaks %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{% url 'item_logs' %}">Logs</a></li>
+{% endblock %}
+
+{% block content %}
+  <table class="table table-striped">
+    <form id="searchform" action="{% url 'item_logs' %}" method="get" accept-charset="utf-8">
+      <thead class="thead">
+      <tr>
+        <th><input class="searchfield" id="searchbox" name="item"
+                   type="text" placeholder="PRODUCTO">
+        </th>
+        <td><button class="btn btn-primary" type="submit">Search</button></td>
+        </thead>
+    </form>
+    <thead class="thead-inverse">
+        <tr>
+          <th>Fecha</th>
+          <th>Operario</th>
+          <th>Producto</th>
+          <th>Cantidad</th>
+        </tr>
+    </thead>
+    <tbody>
+      {% for log in logs %}
+      {% if log.action %}
+      <tr class="table-success">
+      {% else %}
+      <tr class="table-danger">
+      {% endif %}
+      <td>{{ log.created_at }}</td>
+      <td>{{ log.created_by }}</td>
+      <td>{{ log.item }}</td>
+      <td>{{ log.cantidad }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% include 'includes/pagination.html' %}
+{% endblock %}

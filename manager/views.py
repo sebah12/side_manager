@@ -263,6 +263,7 @@ class DepositoListView(ListView):
 def edit_stock(request, item_id, action):
     producto = get_object_or_404(Item, item_id=item_id)
     action = action
+    log = ItemLogs()
     if action == 'add':
         max_value = 2147483647 - producto.stock
     else:
@@ -276,9 +277,16 @@ def edit_stock(request, item_id, action):
             amount = data['cantidad']
             if action == 'add':
                 producto.stock += amount
+                log.action = 1
             else:
                 producto.stock -= amount
+                log.action = 0
+            log.cantidad = amount
+            log.created_by = request.user
+            log.created_at = datetime.datetime.now()
+            log.item = producto
             producto.save()
+            log.save()
             return redirect('deposito')
     else:
         form = EditStockForm(max_value=max_value)
@@ -404,6 +412,13 @@ class RemitoFieldRedirectView(RedirectView):
             cantidad = item.stock
             item.stock = 0
         item.save()
+        log = ItemLogs()
+        log.cantidad = int(cantidad)
+        log.created_by = request.user
+        log.created_at = datetime.datetime.now()
+        log.item = item
+        log.action = 0    
+        log.save()
         campo_remito = CampoRemito()
         campo_remito.item = item
         campo_remito.remito = remito
@@ -426,3 +441,21 @@ class RemitoRecepcionRedirectView(RedirectView):
         self.url = '/remitos/%s-ver' % (remito.remito_id)
         return super(RemitoRecepcionRedirectView, self).get(
             request, *args, **kwargs)    
+
+
+@method_decorator(login_required, name='dispatch')
+class ItemLogsListView(ListView):
+    model = ItemLogs
+    context_object_name = 'logs'
+    template_name = 'item_logs.html'
+    ordering = 'created_at'
+    paginate_by = 20
+
+    def get_queryset(self):
+        result = super(ItemLogsListView, self).get_queryset()
+        # keywords = self.request.GET.get('nombre')
+        # if keywords:
+        #     keywords = keywords.upper()
+        #     result = result.filter(nombre__contains=keywords)
+
+        return result    
