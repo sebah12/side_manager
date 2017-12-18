@@ -1,10 +1,41 @@
 {% extends 'base.html' %}
-{% load form_tags widget_tweaks %}
-{% block breadcrumb %}
-  <li class="breadcrumb-item"><a href="{% url 'item_logs' %}">Logs</a></li>
+
+{% block title %}
+  {{item.item_id }} - {{ block.super }}
 {% endblock %}
 
-{% block content %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{% url 'productos' %}">Productos</a></li>
+  <li class="breadcrumb-item active">{{ item.descripcion }}</li>
+{% endblock %}
+
+  {% block content %}
+  <table class="table table-triped table-sm table-responsive" >
+        <tr>
+          <th>ID</th>
+          <td>{{ item.item_id }}</td>
+        </tr>
+        <tr>
+          <th>Barcode</th>
+          <td>{{ item.barcode }}</td>
+        </tr>
+        <tr>
+          <th>Descripción</th>
+          <td>{{ item.descripcion }}</td>
+        </tr>
+        <tr>
+          <th>Marca</th>
+          <td>{{ item.marca }}</td>
+        </tr>
+        <tr>
+          <th>Precio</th>
+          <td>0</td>
+        </tr>
+      </table>
+  <ol class="breadcrumb my-4">
+    <li class="breadcrumb-item">Logs</li>
+  </ol>
+
   <table class="table table-striped">
     <form id="searchform" action="{% url 'item_logs' %}" method="get" accept-charset="utf-8">
       <thead class="thead">
@@ -12,7 +43,7 @@
         <th><input class="searchfield" id="searchbox" name="item"
                    type="text" placeholder="PRODUCTO">
         </th>
-        <td><button class="btn btn-primary" type="submit">Buscar</button></td>
+        <td><button class="btn btn-primary" type="submit">Search</button></td>
         </thead>
     </form>
     <thead class="thead-inverse">

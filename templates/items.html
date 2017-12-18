@@ -27,7 +27,7 @@
         <th><input class="searchfield" id="searchbox" name="marca"
                    type="text" placeholder="MARCA">
         </th>
-        <td><button class="btn btn-primary" type="submit">Search</button></td>
+        <td><button class="btn btn-primary" type="submit">Buscar</button></td>
         </tr>
         </thead>
     </form>
@@ -49,12 +49,16 @@
             <td>{{ item.descripcion }}</td>
             <td>{{ item.marca }}</td>
             <td class="align-middle">0</td>
-            {% if user.is_superuser %}
-            <td  <span class="badge badge-default">
-                 <a href="{% url 'edit_item' item.item_id %}">Edit</a></span></td>
-            {% else %}
-            <td></td>
-        {% endif %}
+            <td>
+              {% if user.is_superuser %}
+              <span class="badge badge-default">
+                <a href="{% url 'edit_item' item.item_id %}">Editar</a>
+              </span>
+              {% endif %}
+              <span class="badge badge-default">
+                <a href="{% url 'ver_item' item.item_id %}">Detalles</a>
+              </span>
+            </td>
           </tr>
         {% endfor %}
       </tbody>

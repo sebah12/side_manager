@@ -11,7 +11,7 @@
     <form method="post" class="mb-4" novalidate>
     {% csrf_token %}
     {% include 'includes/form.html' %}
-    <button type="submit" class="btn btn-success">Save changes</button>
+    <button type="submit" class="btn btn-success">Guardar cambios</button>
     <a href="{% url 'marcas' %}" class="btn btn-outline-secondary" role="button">Cancel</a>
     <a href="{% url 'delete_marca' marca.marca_id  %}" class="btn btn-danger" role="button">Delete</a>
   </form>

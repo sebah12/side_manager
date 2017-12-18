@@ -15,7 +15,7 @@
         <th><input class="searchfield" id="searchbox" name="nombre"
                    type="text" placeholder="NOMBRE">
         </th>
-        <td><button class="btn btn-primary" type="submit">Search</button></td>
+        <td><button class="btn btn-primary" type="submit">Buscar</button></td>
         </thead>
     </form>
     <thead class="thead-inverse">
@@ -30,7 +30,7 @@
         <td>{{ marca.nombre }}</td>
         {% if user.is_superuser %}
         <td><span class="badge badge-default">
-            <a href="{% url 'edit_marca' marca.marca_id %}">Edit</a></span></td>
+            <a href="{% url 'edit_marca' marca.marca_id %}">Editar</a></span></td>
         {% else %}
          <td></td>
         {% endif %}

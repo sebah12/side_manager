@@ -38,6 +38,8 @@ urlpatterns = [
     url(r'^item_logs/$', views.ItemLogsListView.as_view(), name='item_logs'),
     url(r'^productos/(?P<item_id>\d+)/edit/',
         views.ItemUpdateView.as_view(), name='edit_item'),
+    url(r'^productos/(?P<item_id>\d+)/ver/',
+        views.ProductoDetailListView.as_view(), name='ver_item'),
     url(r'^productos/(?P<item_id>\d+)/delete/$',
         views.ItemDeleteView.as_view(), name='delete_item'),
     url(r'^productos/new/$', views.new_item, name='new_item'),

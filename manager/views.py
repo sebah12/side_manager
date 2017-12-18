@@ -111,6 +111,25 @@ class ProductoListView(ListView):
 
         return (result)
 
+@method_decorator(login_required, name='dispatch')
+class ProductoDetailListView(ListView):
+    model = ItemLogs
+    context_object_name = 'logs'
+    template_name = 'item.html'
+    ordering = 'created_at'
+    paginate_by = 20
+    
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(ProductoDetailListView, self).get_context_data(**kwargs)
+        context['item'] = Item.objects.get(item_id=self.kwargs['item_id'])
+        return context    
+
+    def get_queryset(self):
+        result = super(ProductoDetailListView, self).get_queryset()
+        result = result.filter(item=self.kwargs['item_id'])
+        return (result)
+
 
 @login_required
 def new_item(request):
