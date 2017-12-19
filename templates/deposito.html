@@ -6,32 +6,29 @@
 {% endblock %}
 
 {% block content %}
-  <!-- <div class="mb-4"> -->
-  <!--   <a href="{% url 'new_item' %}" class="btn btn-success">Ingresar Producto</a> -->
-  <!--   <a href="{% url 'new_item' %}" class="btn btn-danger">Retirar Producto</a> -->
-  <!-- </div> -->
-  <table class="table table-triped table-sm table-responsive" >
-    <form id="searchform" action="{% url 'deposito' %}" method="get" accept-charset="utf-8">
-      <thead class="thead">
-      <tr>
-        <th><input class="searchfield" id="searchbox" name="item_id"
-                   type="text" placeholder="ID">
-        </th>
-        <th><input class="searchfield" id="searchbox" name="barcode"
-                   type="text" placeholder="BARCODE">
-        </th>
-        <td><a href="{{ qrdir }}" class="btn btn-primary">
-            Scan</a></td>
-        <th><input class="searchfield" id="searchbox" name="descripcion"
-                   type="text" placeholder="DESCRIPCION">
-        </th>
-        <th><input class="searchfield" id="searchbox" name="marca"
-                   type="text" placeholder="MARCA">
-        </th>
-        <td><button class="btn btn-primary" type="submit">Buscar</button></td>
-        </thead>
+  <div class="container">
+    <form class="form-inline" action="{% url 'deposito' %}" method="get"
+          accept-charset="utf-8">
+      <input type="number" class="form-control  col-sm-1 mb-1 mr-sm-2  mb-sm-0"
+             id="inlineFormInput" name="item_id" placeholder="ID">
+
+      <input type="number" class="form-control col-sm-2 mr-sm-2  mb-sm-0"
+             id="inlineFormInput"
+              name="barcode" placeholder="BARCODE">
+      <a href="{{ qrdir }}" class="btn btn-sm btn-primary">
+          Scan</a>
+
+      <input type="text" class="form-control col-sm-5 ml-2 mb-2 mr-2 mb-sm-0"
+             id="inlineFormInput"
+               name="descripcion" placeholder="DESCRIPCION">
+      <input type="text" class="form-control col-sm-2 mb-2 mr-sm-2 mb-sm-0"
+             id="inlineFormInput"
+              name="marca" placeholder="MARCA">
+      <button class="btn btn-primary" type="submit">Buscar</button>
     </form>
-        <thead class="thead-inverse">
+  </div>
+    <table class="table table-striped table-responsive" >
+      <thead class="thead-inverse">
         <tr>
           <th>ID</th>
           <th>Barcode</th>
@@ -49,10 +46,8 @@
             <td>{{ item.descripcion }}</td>
             <td>{{ item.marca }}</td>
             <td>{{ item.stock }}</td>
-            <!-- <td  <span class="badge badge-default"> -->
-            <!-- <a href="{% url 'edit_item' item.item_id %}">Edit</a></span></td> -->
-            <td><a href="{% url 'edit_stock' item_id=item.item_id action='add' %}
-                         " class="btn btn-success btn-sm btn-block">Ingresar</a>
+            <td><a href="{% url 'edit_stock' item_id=item.item_id action='add' %}"
+                   class="btn btn-success btn-sm btn-block">Ingresar</a>
               {% if item.stock %}
               <a href="{% url 'edit_stock' item_id=item.item_id action='sub' %}"
                  class="btn btn-warning btn-sm btn-block">Retirar</a>

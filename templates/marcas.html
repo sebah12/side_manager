@@ -8,16 +8,15 @@
   <div class="mb-4">
     <a href="{% url 'new_marca' %}" class="btn btn-success">Agregar Marca</a>
   </div>
-  <table class="table table-striped">
-    <form id="searchform" action="{% url 'marcas' %}" method="get" accept-charset="utf-8">
-      <thead class="thead">
-      <tr>
-        <th><input class="searchfield" id="searchbox" name="nombre"
-                   type="text" placeholder="NOMBRE">
-        </th>
-        <td><button class="btn btn-primary" type="submit">Buscar</button></td>
-        </thead>
+  <div class="container">
+    <form class="form-inline" action="{% url 'marcas' %}" method="get"
+          accept-charset="utf-8">
+      <input class="form-control  col-sm-3 mb-1 mr-sm-2  mb-sm-0"
+             id="searchbox" name="nombre" type="text" placeholder="NOMBRE">
+      <button class="btn btn-primary" type="submit">Buscar</button>
     </form>
+  <div>
+  <table class="table table-striped">
     <thead class="thead-inverse">
         <tr>
           <th>Marca</th>
