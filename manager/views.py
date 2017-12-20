@@ -22,10 +22,10 @@ qr_dir2 = '%2F?barcode%3D%7BCODE%7D&%2F&SCAN_FORMATS=UPC_A,EAN_13'
 
 
 def home(request):
-    qr = qrcode.make('http://' + server + '/manager')
-    response = HttpResponse(content_type="image/png")
-    qr.save(response)
-    return response
+    # qr = qrcode.make('http://' + server + '/manager')
+    # response = HttpResponse(content_type="image/png")
+    # qr.save(response)
+    return render(request, 'googlechart.html')
 
 
 @login_required

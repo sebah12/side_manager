@@ -1,0 +1,31 @@
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Semana', 'Ingresos', 'Egresos'],
+          ['4/11', {{ stats.1.3 }}, {{ stats.0.3 }}],
+          ['1/12', {{ stats.1.2 }}, {{ stats.0.2 }}],
+          ['2/12', {{ stats.1.1 }}, {{ stats.0.1 }}],
+          ['Actual', {{ stats.1.0 }}, {{ stats.0.0 }}],
+      ]);
+
+        var options = {
+          chart: {
+            title: 'Entrada / Salida del producto',
+            subtitle: '',
+          },
+          bars: 'vertical' // Required for Material Bar Charts.
+
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('barchart_material'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      }
+    </script>
+
+
+    <div id="barchart_material" style="width: 400px; height: 250px;"></div>
