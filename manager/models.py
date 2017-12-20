@@ -68,6 +68,7 @@ class Item(SoftDeletionModel):
         Marca, related_name='items', blank=True, null=True)
     barcode = models.BigIntegerField(unique=True, blank=True, null=True)
     stock = models.IntegerField(default=0)
+    precio = models.DecimalField(max_digits=10, decimal_places=4, default=0)
 
     def __str__(self):
         return self.descripcion
