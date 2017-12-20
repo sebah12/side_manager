@@ -137,7 +137,7 @@ class ProductoDetailListView(ListView):
             promedio = 9999
         context['stats'] = stats
         context['prom'] = promedio
-        precios = Precio.objects.all().filter(item=item).order_by('date')[:4]
+        precios = Precio.objects.all().filter(item=item).order_by('-date')[:4]
         context['precios'] = precios
         return context
 
@@ -231,6 +231,10 @@ class ItemUpdateView(UserPassesTestMixin, UpdateView):
         producto = form.save(commit=False)
         producto.descripcion = producto.descripcion.upper()
         producto.save()
+        precio = Precio.objects.all().filter(
+            item=producto).latest('date')
+        if precio.precio == producto.precio:
+            return redirect('productos')
         precio = Precio()
         precio.item = producto
         precio.precio = producto.precio
