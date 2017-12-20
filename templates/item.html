@@ -69,6 +69,21 @@
         <h4>Sin stock</h4>
       {% endif %}
     </div>
+   <div class="col-lg-4">
+     <h2>Historial de precios:</h2>
+     <table class="table table-striped">
+       <tr>
+         <td>Valor</td>
+         <td>Fecha</td>
+       </tr>
+       {% for precio in precios %}
+       <tr>
+         <td>$ {{ precio.precio }} </td>
+         <td>{{ precio.date }}</td>
+       </tr>
+     {% endfor %}
+     </table>
+   </div>
 </div>
 <ol class="breadcrumb my-4">
     <li class="breadcrumb-item"><h4>Logs</h4></li>

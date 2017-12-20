@@ -137,6 +137,8 @@ class ProductoDetailListView(ListView):
             promedio = 9999
         context['stats'] = stats
         context['prom'] = promedio
+        precios = Precio.objects.all().filter(item=item).order_by('date')[:4]
+        context['precios'] = precios
         return context
 
     def get_queryset(self):
