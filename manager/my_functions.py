@@ -1,5 +1,6 @@
 from .models import Marca, Item, Remito, CampoRemito, ItemLogs
 import datetime
+from math import ceil
 
 
 def get_stats(item_id):
@@ -68,3 +69,15 @@ def get_split_cant(logs):
                              created_at__lt=date)
         result.append(add_cant_logs(logs_n))
     return result
+
+
+def week_of_month(dt):
+    """ Returns the week of the month for the specified date.
+    """
+
+    first_day = dt.replace(day=1)
+
+    dom = dt.day
+    adjusted_dom = dom + first_day.weekday()
+
+    return int(ceil(adjusted_dom/7.0))
