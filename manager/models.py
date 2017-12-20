@@ -102,3 +102,10 @@ class ItemLogs(SoftDeletionModel):
         User, related_name='logs_emitidos')
     created_at = models.DateTimeField()
     action = models.BooleanField()
+
+
+class Precio(SoftDeletionModel):
+    precio_id = models.AutoField(primary_key=True)
+    item = models.ForeignKey(
+        Item, related_name='precios')
+    precio = models.DecimalField(max_digits=10, decimal_places=4)
