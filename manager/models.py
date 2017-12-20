@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models.query import QuerySet
 from django.contrib.auth.models import User
 from django.utils import timezone
-
+import datetime
 
 class SoftDeletionManager(models.Manager):
     def __init__(self, *args, **kwargs):
@@ -109,3 +109,4 @@ class Precio(SoftDeletionModel):
     item = models.ForeignKey(
         Item, related_name='precios')
     precio = models.DecimalField(max_digits=10, decimal_places=4)
+    date = models.DateTimeField(default=datetime.datetime.now())
