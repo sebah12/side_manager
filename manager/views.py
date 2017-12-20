@@ -121,7 +121,7 @@ class ProductoDetailListView(ListView):
     model = ItemLogs
     context_object_name = 'logs'
     template_name = 'item.html'
-    ordering = 'created_at'
+    ordering = '-created_at'
     paginate_by = 20
 
     def get_context_data(self, **kwargs):
@@ -482,7 +482,7 @@ class ItemLogsListView(ListView):
     model = ItemLogs
     context_object_name = 'logs'
     template_name = 'item_logs.html'
-    ordering = 'created_at'
+    ordering = '-created_at'
     paginate_by = 20
 
     def get_queryset(self):
