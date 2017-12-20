@@ -34,11 +34,12 @@ class NewProductForm(forms.ModelForm):
     marca = forms.TypedChoiceField(
         choices=get_my_choices())
     barcode = forms.NumberInput()
+    precio = forms.NumberInput()
     marca = 1
 
     class Meta:
         model = Item
-        fields = ['item_id', 'descripcion', 'marca', 'barcode']
+        fields = ['item_id', 'descripcion', 'marca', 'barcode', 'precio']
 
 
 class EditStockForm(forms.Form):

@@ -213,7 +213,7 @@ class MarcaDeleteView(UserPassesTestMixin, DeleteView):
 @method_decorator(login_required, name='dispatch')
 class ItemUpdateView(UserPassesTestMixin, UpdateView):
     model = Item
-    fields = ('descripcion', 'marca', 'barcode',)
+    fields = ('descripcion', 'marca', 'barcode', 'precio')
     template_name = 'edit_item.html'
     pk_url_kwarg = 'item_id'
     context_object_name = 'producto'
@@ -229,6 +229,10 @@ class ItemUpdateView(UserPassesTestMixin, UpdateView):
         producto = form.save(commit=False)
         producto.descripcion = producto.descripcion.upper()
         producto.save()
+        precio = Precio()
+        precio.item = producto
+        precio.precio = producto.precio
+        precio.save()
         return redirect('productos')
 
 
