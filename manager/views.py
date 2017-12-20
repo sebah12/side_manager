@@ -11,6 +11,7 @@ from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse
 import qrcode
 import datetime
+from .my_functions import get_stats
 from side_project import settings
 
 server = settings.server
@@ -127,7 +128,15 @@ class ProductoDetailListView(ListView):
         # Call the base implementation first to get a context
         context = super(ProductoDetailListView, self).get_context_data(
             **kwargs)
-        context['item'] = Item.objects.get(item_id=self.kwargs['item_id'])
+        item = Item.objects.get(item_id=self.kwargs['item_id'])
+        context['item'] = item
+        stats = get_stats(self.kwargs['item_id'])
+        if stats[0][4]:
+            promedio = (round(item.stock/(stats[0][4]/20)))
+        else:
+            promedio = 9999
+        context['stats'] = stats
+        context['prom'] = promedio
         return context
 
     def get_queryset(self):
