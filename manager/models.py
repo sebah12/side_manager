@@ -77,7 +77,7 @@ class Item(SoftDeletionModel):
     barcode = models.BigIntegerField(unique=True, blank=True, null=True)
     stock = models.IntegerField(default=0)
     precio = models.DecimalField(max_digits=10, decimal_places=4, default=0)
-    alarma = models.IntegerField(default=0, choices=ALARM_CHOICES)
+    alarma = models.IntegerField(default=2, choices=ALARM_CHOICES)
 
     def __str__(self):
         return self.descripcion
