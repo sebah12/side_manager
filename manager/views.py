@@ -330,6 +330,17 @@ def edit_stock(request, item_id, action):
             else:
                 producto.stock -= amount
                 log.action = 0
+            stats = get_stats(producto.item_id)
+            if stats[0][4]:
+                promedio = (round(producto.stock/(stats[0][4]/20)))
+            else:
+                promedio = 9999
+            if promedio > 14 and producto.stock:
+                producto.alarma = 0
+            elif promedio > 7 and producto.stock:
+                producto.alarma = 1
+            else:
+                producto.alarma = 2
             log.cantidad = amount
             log.created_by = request.user
             log.created_at = datetime.datetime.now()
@@ -462,6 +473,17 @@ class RemitoFieldRedirectView(RedirectView):
         else:
             cantidad = item.stock
             item.stock = 0
+        stats = get_stats(item.item_id)
+        if stats[0][4]:
+            promedio = (round(item.stock/(stats[0][4]/20)))
+        else:
+            promedio = 9999
+        if promedio > 14 and item.stock:
+            item.alarma = 0
+        elif promedio > 7 and Item.stock:
+            item.alarma = 1
+        else:
+            item.alarma = 2
         item.save()
         log = ItemLogs()
         log.cantidad = int(cantidad)
@@ -510,3 +532,17 @@ class ItemLogsListView(ListView):
             result = result.filter(item__descripcion__contains=keywords)
 
         return result
+
+
+@method_decorator(login_required, name='dispatch')
+class AlarmaListView(ListView):
+    model = Item
+    context_object_name = 'productos'
+    template_name = 'alarmas.html'
+    ordering = 'alarma'
+    paginate_by = 10
+
+    def get_queryset(self):
+        result = super(AlarmaListView, self).get_queryset().filter(
+            alarma__gt=0)
+        return (result)

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load form_tags widget_tweaks %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item active"><a href="{% url 'alarmas' %}">Alarmas</a></li>
+{% endblock %}
+
+  {% block content %}
+
+
+  <table class="table table-striped table-responsive" >
+    <thead class="thead-inverse">
+      <tr>
+        <th width="10%">ID</th>
+        <th>Barcode</th>
+        <th>Descripción</th>
+        <th>Marca</th>
+        <th>Stock</th>
+        <th>Nivel de stock</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in productos %}
+      <tr>
+        <td>{{ item.item_id }}</td>
+        <td>{{ item.barcode }}</td>
+        <td>{{ item.descripcion }}</td>
+        <td>{{ item.marca }}</td>
+        <td>{{ item.stock }}</td>
+        {% if item.alarma == 1 %}
+        <td><span class="badge badge-warning">Bajo</span></td>
+        {% elif item.stock %}
+        <td><span class="badge badge-danger">Muy bajo</span></td>
+        {% else %}
+        <td><span class="badge badge-danger">Sin stock</span></td>
+        {% endif %}
+        <td>
+          <span class="badge badge-default">
+            <a href="{% url 'ver_item' item.item_id %}">Detalles</a>
+          </span>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% include 'includes/pagination.html' %}
+{% endblock %}

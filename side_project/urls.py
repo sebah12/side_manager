@@ -35,6 +35,7 @@ urlpatterns = [
         views.MarcaDeleteView.as_view(), name='delete_marca'),
     url(r'^marcas/new/$', views.new_marca, name='new_marca'),
     url(r'^marcas/$', views.MarcaListView.as_view(), name='marcas'),
+    url(r'^alarmas/$', views.AlarmaListView.as_view(), name='alarmas'),
     url(r'^item_logs/$', views.ItemLogsListView.as_view(), name='item_logs'),
     url(r'^productos/(?P<item_id>\d+)/edit/',
         views.ItemUpdateView.as_view(), name='edit_item'),
