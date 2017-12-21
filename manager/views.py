@@ -156,6 +156,11 @@ def new_item(request):
             # marca = Marca.objects.get(nombre=producto.marca)
             producto.descripcion = producto.descripcion.upper()
             producto.save()
+            if producto.precio:
+                precio = Precio()
+                precio.item = producto
+                precio.precio = producto.precio
+                precio.save()
             return redirect('productos')
     else:
         form = NewProductForm()
@@ -497,9 +502,9 @@ class ItemLogsListView(ListView):
 
     def get_queryset(self):
         result = super(ItemLogsListView, self).get_queryset()
-        # keywords = self.request.GET.get('nombre')
-        # if keywords:
-        #     keywords = keywords.upper()
-        #     result = result.filter(nombre__contains=keywords)
+        keywords = self.request.GET.get('descripcion')
+        if keywords:
+            keywords = keywords.upper()
+            result = result.filter(item__descripcion__contains=keywords)
 
         return result
