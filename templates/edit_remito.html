@@ -8,7 +8,6 @@
   <li class="breadcrumb-item"><a href="{% url 'remitos' %}">Remitos</a></li>
   <li class="breadcrumb-item active">Remito {{ remito.remito_id }}</li>
 {% endblock %}
-
 {% block content %}
   <div clas="row">
     <section class="row text-left placeholders">
@@ -36,9 +35,11 @@
         </tr>
       </table>
     {% if action == "ver" %}
-    {% if not remito.received_at %}
-    <a href="{% url 'remito_receive' remito.remito_id %}"
-       class="btn btn-success">Confirmar Recepción</a>
+      {% if not remito.received_at %}
+      <div class="noprint">
+        <a href="{% url 'remito_receive' remito.remito_id %}"
+           class="btn btn-success">Confirmar Recepción</a>
+      </div>
     {% endif %}
     {% else %}
     <a href="{% url 'new_remito_field' remito.remito_id %}"
@@ -77,5 +78,7 @@
     </tbody>
   </table>
 </div>
-{% include 'includes/pagination.html' %}
+<div class="noprint">
+  {% include 'includes/pagination.html' %}
+</div>
 {% endblock %}
