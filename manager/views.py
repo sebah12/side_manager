@@ -238,8 +238,9 @@ class ItemUpdateView(UserPassesTestMixin, UpdateView):
         producto.save()
         precio = Precio.objects.all().filter(
             item=producto).latest('date')
-        if precio.precio == producto.precio:
-            return redirect('productos')
+        if precio:
+            if precio.precio == producto.precio:
+                return redirect('productos')
         precio = Precio()
         precio.item = producto
         precio.precio = producto.precio
