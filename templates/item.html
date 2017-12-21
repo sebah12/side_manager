@@ -54,17 +54,22 @@
     </div>
     <div class="col-lg-6">
       <h2>Stock en depósito:
-        {% if prom > 14 and item.stock %}
+        {% if prom > 14 %}
         <span class="badge badge-success">{{ item.stock }}</span></h2>
         <h4>Fuera de stock en</h4>
         <p align="center"><h3> {{ prom }} días </h3></p>
         <p>Basado en promedio de retiros del último mes.</p>
-      {% elif prom > 7 and item.stock %}
+        {% elif prom > 7 %}
         <span class="badge badge-warning">{{ item.stock }}</span></h2>
         <h4>Fuera de stock en</h4>
         <p align="center"><h3> {{ prom }} días </h3></p>
         <p>Basado en promedio de retiros del último mes.</p>
-      {% else %}
+        {% elif item.stock %}
+        <span class="badge badge-danger">{{ item.stock }}</span></h2>
+        <h4>Fuera de stock en</h4>
+        <p align="center"><h3> {{ prom }} días </h3></p>
+        <p>Basado en promedio de retiros del último mes.</p>
+        {% else %}
         <span class="badge badge-danger">{{ item.stock }}</span></h2>
         <h4>Sin stock</h4>
       {% endif %}
