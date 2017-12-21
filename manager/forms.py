@@ -60,7 +60,7 @@ class NewRemitoForm(forms.ModelForm):
         max_length=200,
         required=True,
         help_text='Descripción del remito')
-    
+
     class Meta:
         model = Remito
-        fields = ['notas']    
+        fields = ['notas']

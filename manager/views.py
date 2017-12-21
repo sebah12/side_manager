@@ -280,7 +280,7 @@ class DepositoListView(ListView):
     model = Item
     context_object_name = 'productos'
     template_name = 'deposito.html'
-    ordering = '-stock'
+    ordering = ['-stock', 'item_id']
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
