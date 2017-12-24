@@ -4,10 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1,
                                    shrink-to-fit=yes">
-    <title>{% block title %}SIDE Manager{% endblock %}</title>
+    <title>{% block title %}SIdE Manager{% endblock %}</title>
      <link href="https://fonts.googleapis.com/css?family=Peralta" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sticky-footer-navbar.css' %}">
       <style type="text/css">
     @media print
     {
@@ -19,9 +20,9 @@
   <body>
     {% block body %}
     <div class="noprint">
-     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div class="container">
-        <a class="navbar-brand" href="{% url 'manager' %}">SIDE Manager</a>
+        <a class="navbar-brand" href="{% url 'manager' %}">SIdE Manager</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse"
                 data-target="#mainMenu" aria-controls="mainMenu"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -62,6 +63,11 @@
       {% endblock %}
     </div>
     {% endblock body %}
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">Servicios Integrales de Electricidad 2017</span>
+      </div>
+    </footer>
     <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
